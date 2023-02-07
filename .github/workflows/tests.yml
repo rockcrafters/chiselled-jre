@@ -1,0 +1,61 @@
+name: "Ubuntu 'chiselled-jre' Tests"
+
+on: push
+
+env:
+  image-name: ubuntu/chiselled-jre:test
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    name: Build and Test
+    strategy:
+      fail-fast: false
+      matrix:
+        ubuntu-release: ["22.04"]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin' # See 'Supported distributions' for available options
+          java-version: '8'
+          
+      - name: Build the chiselled-jre image
+        run: |
+          docker build \
+          -t ${{ env.image-name }} \
+          -f chiselled-jre/Dockerfile.${{ matrix.ubuntu-release }} \
+          chiselled-jre
+
+      - name: Run Tests
+        working-directory: ${{ github.workspace }}/tests/
+        run: |
+          ./run-all-tests ${{ env.image-name }}
+
+  multi-arch-build:
+    runs-on: ubuntu-22.04
+    name: Multi Architecture Build
+    strategy:
+      fail-fast: false
+      matrix:
+        ubuntu-release: ["22.04"]
+        arch: ["amd64", "arm64"]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build the chiselled-jre image
+        run: |
+          docker buildx build \
+          --tag=${{ env.image-name }} \
+          --file=chiselled-jre/Dockerfile.${{ matrix.ubuntu-release }} \
+          --platform=linux/${{ matrix.arch }} \
+          chiselled-jre
