@@ -5,4 +5,3 @@ platforms:
   amd64:
   arm64:
     build-on: [amd64]
-
