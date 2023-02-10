@@ -1,4 +1,4 @@
-name: 8
+name: chiselled-jre
 version: 8
 base: 22.04
 platforms:
