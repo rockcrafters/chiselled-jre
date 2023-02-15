@@ -6,7 +6,7 @@ echo "Running tests..."
 export BASE_IMAGE=${1:-"ubuntu/chiselled-jre:test"}
 
 compile() {
-	javac $1 $2
+	javac -source 8 -target 8 $1 $2
 }
 
 run_container() {
