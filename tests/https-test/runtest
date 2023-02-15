@@ -1,0 +1,8 @@
+#!/bin/bash
+set -ex
+
+echo "Running test for Java Hello World app"
+
+compile src/Main.java "-d ."
+
+run_container $BASE_IMAGE "-Djavax.net.debug=all Main"
