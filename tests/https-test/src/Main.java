@@ -17,6 +17,5 @@ public class Main {
             new BufferedReader(new InputStreamReader(stream));
         while (reader.readLine()!=null){
         }
-
     }
 }
