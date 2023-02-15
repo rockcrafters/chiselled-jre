@@ -1,6 +1,8 @@
 name: "Ubuntu 'chiselled-jre' Tests"
 
-on: push
+on:
+  pull_request:
+  push:
 
 env:
   image-name: ubuntu/chiselled-jre:test
@@ -21,7 +23,7 @@ jobs:
         with:
           distribution: 'temurin' # See 'Supported distributions' for available options
           java-version: '8'
-          
+
       - name: Build the chiselled-jre image
         run: |
           docker build \
