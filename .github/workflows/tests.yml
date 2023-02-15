@@ -24,6 +24,14 @@ jobs:
           distribution: 'temurin' # See 'Supported distributions' for available options
           java-version: '8'
 
+      - name: Tests Maven cache
+        uses: actions/cache@v3
+        with:
+          path: tests/petclinic-test/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
       - name: Build the chiselled-jre image
         run: |
           docker build \
