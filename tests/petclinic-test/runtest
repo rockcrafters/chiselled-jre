@@ -31,6 +31,7 @@ docker run -v ${TEST_DIR}:${TEST_DIR} -w ${TEST_DIR}/spring-petclinic \
          -Dmaven.repo.local="${TEST_DIR}/.m2" \
          -Dmaven.multiModuleProjectDirectory="${PROJECT_DIR}" \
          org.apache.maven.wrapper.MavenWrapperMain \
+         -q \
          test
 
 cp /bin/sh sh
