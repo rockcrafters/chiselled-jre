@@ -1,0 +1,30 @@
+#!/bin/sh
+
+set -ex
+
+VERSION=2.0.27
+APP=pdfbox-${VERSION}
+MAVEN_DOCKER=maven:3.9.0-eclipse-temurin-8
+TEST_DIR=`pwd`
+
+if [ ! -d ${APP} ]; then
+    curl -o ${APP}-src.zip  https://dlcdn.apache.org/pdfbox/${VERSION}/${APP}-src.zip
+    unzip -o ${APP}-src.zip
+fi
+
+# create the chiselled JRE docker with maven
+docker build -t chiselled-maven \
+    --build-arg MAVEN_DOCKER=${MAVEN_DOCKER} \
+    --build-arg BASE_IMAGE=${BASE_IMAGE:-ubuntu/chiselled-jre:8_edge} \
+    .
+
+# build and tests with chiselled jre
+docker run --rm  \
+    --tmpfs /tmp:exec \
+    -u $(id -u ${USER}):$(id -g ${USER}) \
+    -v ${TEST_DIR}:${TEST_DIR} \
+    -w ${TEST_DIR}/${APP} \
+    chiselled-maven \
+        -Dmaven.repo.local="${TEST_DIR}/.m2" \
+        -Dmaven.compiler.useIncrementalCompilation=false \
+        test

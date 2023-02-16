@@ -27,7 +27,9 @@ jobs:
       - name: Tests Maven cache
         uses: actions/cache@v3
         with:
-          path: tests/petclinic-test/.m2
+          path: |
+            tests/petclinic-test/.m2
+            tests/pdfbox/.m2
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
