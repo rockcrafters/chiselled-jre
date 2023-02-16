@@ -1,6 +1,6 @@
 # Spring PetClinic
 
-This Dockerfile runs the [Spring PetClinic](https://github.com/spring-projects/spring-petclinic) sample the `ubuntu/chiselled-jre` container image.
+This Dockerfile runs the [Spring PetClinic](https://github.com/spring-projects/spring-petclinic) sample on the `ubuntu/chiselled-jre` container image.
 
 # Running the sample
 
