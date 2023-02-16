@@ -1,6 +1,6 @@
 # Spring PetClinic
 
-This docker file contains [Spring PetClinic](https://github.com/spring-projects/spring-petclinic) sample built on top of chiselled-jre container.
+This Dockerfile runs the [Spring PetClinic](https://github.com/spring-projects/spring-petclinic) sample the `ubuntu/chiselled-jre` container image.
 
 # Running the sample
 
@@ -8,4 +8,4 @@ Execute:
 
 `` docker build -t petclinic . && docker run -p 8080:8080 --tmpfs /tmp:exec petclinic ``
 
-Navigate to http://localhost:8080 to explore the demo.
+Give it a few minutes to build the sample application and then navigate to http://localhost:8080 to explore the demo.
