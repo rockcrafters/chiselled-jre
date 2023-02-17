@@ -4,7 +4,7 @@ set -ex
 
 VERSION=2.0.27
 APP=pdfbox-${VERSION}
-MAVEN_DOCKER=maven:3.9.0-eclipse-temurin-8
+MAVEN_IMAGE=maven:3.9.0-eclipse-temurin-8
 TEST_DIR=`pwd`
 
 if [ ! -d ${APP} ]; then
@@ -14,7 +14,7 @@ fi
 
 # create the chiselled JRE docker with maven
 docker build -t chiselled-maven \
-    --build-arg MAVEN_DOCKER=${MAVEN_DOCKER} \
+    --build-arg MAVEN_IMAGE=${MAVEN_IMAGE} \
     --build-arg BASE_IMAGE=${BASE_IMAGE:-ubuntu/chiselled-jre:8_edge} \
     .
 
