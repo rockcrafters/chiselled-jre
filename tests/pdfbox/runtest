@@ -9,7 +9,7 @@ TEST_DIR=`pwd`
 
 if [ ! -d ${APP} ]; then
     curl -o ${APP}-src.zip  https://dlcdn.apache.org/pdfbox/${VERSION}/${APP}-src.zip
-    unzip -o ${APP}-src.zip
+    (unzip -o ${APP}-src.zip && cd ${APP} && git apply ../TestCreateSignature.patch)
 fi
 
 # create the chiselled JRE docker with maven
