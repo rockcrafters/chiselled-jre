@@ -1,8 +1,10 @@
 #!/bin/bash
 set -ex
 
-echo "Running test for Java Hello World app"
+echo "Running test for HTTPS connection app"
 
 compile src/Main.java "-d ."
 
-run_container $BASE_IMAGE "-Djavax.net.debug=all Main"
+# run the test and if it fails, retry with the full network diagnostics
+run_container $BASE_IMAGE Main || \
+    run_container $BASE_IMAGE "-Djavax.net.debug=all Main"
