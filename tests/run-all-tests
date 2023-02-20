@@ -18,6 +18,8 @@ run_container() {
 export -f compile
 export -f run_container
 
+mkdir -p ${M2_CACHE}
+
 CURRENT_DIR="$(dirname $(readlink -f $0))"
 
 for test_dir in "$CURRENT_DIR"/*/

@@ -60,10 +60,6 @@ jobs:
 
       - name: Build the JDK docker image
         run: |
-          echo $USER
-          id -u $USER
-          id -g $USER
-
           docker build \
           -t ${{ env.build-image-name }} \
           --build-arg UID=$(id -u ${USER}) \
@@ -74,7 +70,6 @@ jobs:
       - name: Run Tests
         working-directory: ${{ github.workspace }}/tests/
         run: |
-          mkdir -p ${{ runner.temp }}/.m2
           ./run-all-tests ${{ env.image-name }} \
                           ${{ env.build-image-name }} \
                           ${{ runner.temp }}/.m2
