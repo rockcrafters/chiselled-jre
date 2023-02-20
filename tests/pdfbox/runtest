@@ -6,6 +6,7 @@ VERSION=2.0.27
 APP=pdfbox-${VERSION}
 MAVEN_IMAGE=maven:3.9.0-eclipse-temurin-8
 TEST_DIR=`pwd`
+M2_CACHE=${1:-"/tmp/.m2"}
 
 if [ ! -d ${APP} ]; then
     curl -o ${APP}-src.zip  https://dlcdn.apache.org/pdfbox/${VERSION}/${APP}-src.zip
@@ -21,10 +22,11 @@ docker build -t chiselled-maven \
 # build and tests with chiselled jre
 docker run --rm  \
     --tmpfs /tmp:exec \
-    -u $(id -u ${USER}):$(id -g ${USER}) \
+    -u app \
+    -v ${M2_CACHE}:${M2_CACHE}:rw \
     -v ${TEST_DIR}:${TEST_DIR} \
     -w ${TEST_DIR}/${APP} \
     chiselled-maven \
-        -Dmaven.repo.local="${TEST_DIR}/.m2" \
+        -Dmaven.repo.local="${M2_CACHE}" \
         -Dmaven.compiler.useIncrementalCompilation=false \
         test

@@ -12,9 +12,5 @@ ARG GID
 USER $UID:$GID
 
 # shell is needed for maven surefire plugin
-ADD --chown=$UID:$GID sh /bin/sh
-ADD --chown=$UID:$GID spring-petclinic /spring-petclinic
-ADD --chown=$UID:$GID .m2 /.m2
-
-WORKDIR /spring-petclinic
+ADD sh /bin/sh
 

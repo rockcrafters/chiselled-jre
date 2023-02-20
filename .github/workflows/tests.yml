@@ -6,6 +6,7 @@ on:
 
 env:
   image-name: ubuntu/chiselled-jre:test
+  build-image-name: ubuntu/chiselled-jre:test-builder
 
 jobs:
   build:
@@ -27,25 +28,56 @@ jobs:
       - name: Tests Maven cache
         uses: actions/cache@v3
         with:
-          path: |
-            tests/petclinic-test/.m2
-            tests/pdfbox/.m2
+          path: ${{ runner.temp }}/.m2
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
+
+      - name: Tests PDFBox
+        uses: actions/cache@v3
+        with:
+          path: tests/pdfbox/pdfbox-2.0.27
+          key: tests-pdfbox-pdfbox-2.0.27
+          restore-keys: |
+            tests-pdfbox-pdfbox-2.0.27
+
+      - name: Tests Petclinic
+        uses: actions/cache@v3
+        with:
+          path: tests/petclinic-test/spring-petclinic
+          key: tests-petclinic-test-spring-petclinic
+          restore-keys: |
+            tests-petclinic-test-spring-petclinic
 
       - name: Build the chiselled-jre image
         run: |
           docker build \
           -t ${{ env.image-name }} \
+          --build-arg UID=$(id -u ${USER}) \
+          --build-arg GID=$(id -g ${USER}) \
           -f chiselled-jre/Dockerfile.${{ matrix.ubuntu-release }} \
           chiselled-jre
+
+      - name: Build the JDK docker image
+        run: |
+          echo $USER
+          id -u $USER
+          id -g $USER
+
+          docker build \
+          -t ${{ env.build-image-name }} \
+          --build-arg UID=$(id -u ${USER}) \
+          --build-arg GID=$(id -g ${USER}) \
+          -f tests/Dockerfile.${{ matrix.ubuntu-release }} \
+          tests
 
       - name: Run Tests
         working-directory: ${{ github.workspace }}/tests/
         run: |
-          ./run-all-tests ${{ env.image-name }}
-
+          mkdir -p ${{ runner.temp }}/.m2
+          ./run-all-tests ${{ env.image-name }} \
+                          ${{ env.build-image-name }} \
+                          ${{ runner.temp }}/.m2
   multi-arch-build:
     runs-on: ubuntu-22.04
     name: Multi Architecture Build

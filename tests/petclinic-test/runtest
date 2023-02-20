@@ -22,13 +22,17 @@ git clone --branch $PETCLINIC_TAG $PETCLINIC_REPO || \
 
 TEST_DIR=`pwd`
 PROJECT_DIR=${TEST_DIR}/spring-petclinic
+M2_CACHE=${1:-"/tmp/.m2"}
 
 # Build and run tests with JDK8 container. We should replace Temurin with
 # our dev container
-docker run -v ${TEST_DIR}:${TEST_DIR} -w ${TEST_DIR}/spring-petclinic \
+docker run \
+    -v ${M2_CACHE}:${M2_CACHE} \
+    -v ${TEST_DIR}:${TEST_DIR} \
+    -w ${TEST_DIR}/spring-petclinic \
     $BUILD_DOCKER \
     java -classpath "${PROJECT_DIR}/.mvn/wrapper/maven-wrapper.jar" \
-         -Dmaven.repo.local="${TEST_DIR}/.m2" \
+         -Dmaven.repo.local="${M2_CACHE}" \
          -Dmaven.multiModuleProjectDirectory="${PROJECT_DIR}" \
          org.apache.maven.wrapper.MavenWrapperMain \
          -q \
@@ -41,9 +45,9 @@ docker build --build-arg BASE_IMAGE=${BASE_IMAGE:-ubuntu/chiselled-jre:8_edge} \
     -t petclinic .
 
 # now run the tests within our container
-docker run --rm --tmpfs /tmp:exec petclinic \
+docker run --rm --tmpfs /tmp:exec -v ${M2_CACHE}:${M2_CACHE} petclinic \
     -classpath /spring-petclinic/.mvn/wrapper/maven-wrapper.jar \
-    -Dmaven.repo.local=/.m2 \
+    -Dmaven.repo.local="${M2_CACHE}" \
     -Dmaven.multiModuleProjectDirectory=/spring-petclinic \
     -Dmaven.compiler.useIncrementalCompilation=false \
     org.apache.maven.wrapper.MavenWrapperMain \
