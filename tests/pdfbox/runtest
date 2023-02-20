@@ -26,7 +26,7 @@ VERSION=2.0.27
 APP=pdfbox-${VERSION}
 TEST_DIR=`pwd`
 
-DOCKER_OPTIONS="--rm  \
+DOCKER_OPTS="--rm  \
     --tmpfs /tmp:exec \
     -u app \
     -v ${M2_CACHE}:${M2_CACHE} \
@@ -46,7 +46,7 @@ docker build -t chiselled-maven \
 
 # build and tests with chiselled jre
 docker run \
-    ${DOCKER_OPTIONS} \
+    ${DOCKER_OPTS} \
     chiselled-maven \
         -Dmaven.repo.local="${M2_CACHE}" \
         test
