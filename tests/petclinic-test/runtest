@@ -53,7 +53,7 @@ DOCKER_OPTS="--rm --tmpfs /tmp:exec \
 # add shell to allow maven tests
 cp /bin/sh sh
 docker build --build-arg BASE_IMAGE=${BASE_IMAGE:-ubuntu/chiselled-jre:8_edge} \
-    -t petclinic .
+    -t ${PETCLINIC_TAG} .
 
 # Build and run tests with JDK8 container. We should replace Temurin with
 # our dev container
@@ -62,11 +62,11 @@ docker run \
     ${BUILD_IMAGE} \
     java \
     ${MAVEN_COMMAND} \
-    -q test
+    -q test-compile
 
 # now run the tests within our container
 docker run \
     ${DOCKER_OPTS} \
-    petclinic \
+    ${PETCLINIC_TAG} \
     ${MAVEN_COMMAND} \
     test
