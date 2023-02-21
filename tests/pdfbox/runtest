@@ -2,10 +2,36 @@
 
 set -ex
 
+# This tests downloads PDFBox, patches out flaky test, copies javac in the
+# container and then builds and runs PDFBox tests
+echo "Running Apache PDFBox self-tests"
+
+if [ -z $BUILD_IMAGE ]; then
+    echo 'Please define $BUILD_IMAGE'
+    exit 1
+fi
+
+if [ -z $BASE_IMAGE ]; then
+    echo 'Please define $BASE_IMAGE'
+    exit 1
+fi
+
+if [ -z $M2_CACHE ]; then
+    echo 'Please define $M2_CACHE'
+    exit 1
+fi
+
+MAVEN_IMAGE=maven:3.9.0-eclipse-temurin-8
 VERSION=2.0.27
 APP=pdfbox-${VERSION}
-MAVEN_IMAGE=maven:3.9.0-eclipse-temurin-8
 TEST_DIR=`pwd`
+
+DOCKER_OPTS="--rm  \
+    --tmpfs /tmp:exec \
+    -u app \
+    -v ${M2_CACHE}:${M2_CACHE} \
+    -v ${TEST_DIR}:${TEST_DIR} \
+    -w ${TEST_DIR}/${APP} "
 
 if [ ! -d ${APP} ]; then
     curl -o ${APP}-src.zip  https://dlcdn.apache.org/pdfbox/${VERSION}/${APP}-src.zip
@@ -19,12 +45,8 @@ docker build -t chiselled-maven \
     .
 
 # build and tests with chiselled jre
-docker run --rm  \
-    --tmpfs /tmp:exec \
-    -u $(id -u ${USER}):$(id -g ${USER}) \
-    -v ${TEST_DIR}:${TEST_DIR} \
-    -w ${TEST_DIR}/${APP} \
+docker run \
+    ${DOCKER_OPTS} \
     chiselled-maven \
-        -Dmaven.repo.local="${TEST_DIR}/.m2" \
-        -Dmaven.compiler.useIncrementalCompilation=false \
+        -Dmaven.repo.local="${M2_CACHE}" \
         test

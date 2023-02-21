@@ -1,18 +1,9 @@
 ARG BASE_IMAGE=ubuntu/chiselled-jre:8_edge
 ARG MAVEN_IMAGE=maven:3.9.0-eclipse-temurin-8
-ARG USER=app
-ARG UID=101
-ARG GROUP=app
-ARG GID=101
-
 FROM $MAVEN_IMAGE as builder
 
 FROM $BASE_IMAGE
 
-ARG USER
-ARG UID
-ARG GID
-USER $UID:$GID
 COPY --from=builder /bin/sh /bin/sh
 COPY --from=builder /usr/bin/chmod /usr/bin/chmod
 COPY --from=builder /usr/bin/uname /usr/bin/uname

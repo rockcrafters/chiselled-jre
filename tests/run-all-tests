@@ -4,6 +4,8 @@ set -ex
 echo "Running tests..."
 
 export BASE_IMAGE=${1:-"ubuntu/chiselled-jre:test"}
+export BUILD_IMAGE=${2:-"ubuntu/chiselled-jre:test-builder"}
+export M2_CACHE=${3:-"/tmp/.m2"}
 
 compile() {
 	javac -source 8 -target 8 $1 $2
@@ -15,6 +17,8 @@ run_container() {
 
 export -f compile
 export -f run_container
+
+mkdir -p ${M2_CACHE}
 
 CURRENT_DIR="$(dirname $(readlink -f $0))"
 

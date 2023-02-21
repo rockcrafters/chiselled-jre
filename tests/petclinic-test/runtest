@@ -8,43 +8,65 @@ set -ex
 
 echo "Running Spring Petclinic self-tests"
 
-# Replace with our development docker when it is ready
-BUILD_DOCKER=eclipse-temurin:8u362-b09-jdk-jammy
+if [ -z $BUILD_IMAGE ]; then
+    echo 'Please define $BUILD_IMAGE'
+    exit 1
+fi
+
+if [ -z $BASE_IMAGE ]; then
+    echo 'Please define $BASE_IMAGE'
+    exit 1
+fi
+
+if [ -z $M2_CACHE ]; then
+    echo 'Please define $M2_CACHE'
+    exit 1
+fi
 
 # clone petclinic repository, alternative is to have a submodule here
+TEST_DIR=`pwd`
+PROJECT=spring-petclinic
+PROJECT_DIR=${TEST_DIR}/${PROJECT}
+
 PETCLINIC_TAG=spring-boot-2.7.3
-PETCLINIC_REPO=https://github.com/vpa1977/spring-petclinic
+PETCLINIC_REPO=https://github.com/vpa1977/${PROJECT}
 echo cloning $PETCLINIC_TAG $PETCLINIC_REPO
 git clone --branch $PETCLINIC_TAG $PETCLINIC_REPO || \
-    (cd spring-petclinic && \
-     git checkout $PETCLINIC_TAG &&
+    (cd ${PROJECT} && \
+     git checkout ${PETCLINIC_TAG} &&
      git reset --hard)
 
-TEST_DIR=`pwd`
-PROJECT_DIR=${TEST_DIR}/spring-petclinic
+WRAPPER_JAR=${PROJECT_DIR}/.mvn/wrapper/maven-wrapper.jar
+MAVEN_COMMAND="-classpath ${WRAPPER_JAR} \
+                  -Dmaven.home=${M2_CACHE}
+                  -Dmaven.repo.local=${M2_CACHE} \
+                  -Dmaven.repo.local=${M2_CACHE} \
+                  -Dmaven.multiModuleProjectDirectory=${PROJECT_DIR} \
+                  org.apache.maven.wrapper.MavenWrapperMain"
+
+DOCKER_OPTS="--rm --tmpfs /tmp:exec \
+    -v ${M2_CACHE}:${M2_CACHE} \
+    -v ${TEST_DIR}:${TEST_DIR} \
+    -w ${TEST_DIR}/spring-petclinic\
+    -u app"
+
+# add shell to allow maven tests
+cp /bin/sh sh
+docker build --build-arg BASE_IMAGE=${BASE_IMAGE:-ubuntu/chiselled-jre:8_edge} \
+    -t ${PETCLINIC_TAG} .
 
 # Build and run tests with JDK8 container. We should replace Temurin with
 # our dev container
-docker run -v ${TEST_DIR}:${TEST_DIR} -w ${TEST_DIR}/spring-petclinic \
-    $BUILD_DOCKER \
-    java -classpath "${PROJECT_DIR}/.mvn/wrapper/maven-wrapper.jar" \
-         -Dmaven.repo.local="${TEST_DIR}/.m2" \
-         -Dmaven.multiModuleProjectDirectory="${PROJECT_DIR}" \
-         org.apache.maven.wrapper.MavenWrapperMain \
-         -q \
-         test
-
-cp /bin/sh sh
-
-# build docker containing maven cache and a project
-docker build --build-arg BASE_IMAGE=${BASE_IMAGE:-ubuntu/chiselled-jre:8_edge} \
-    -t petclinic .
+docker run \
+    ${DOCKER_OPTS} \
+    ${BUILD_IMAGE} \
+    java \
+    ${MAVEN_COMMAND} \
+    -q test-compile
 
 # now run the tests within our container
-docker run --rm --tmpfs /tmp:exec petclinic \
-    -classpath /spring-petclinic/.mvn/wrapper/maven-wrapper.jar \
-    -Dmaven.repo.local=/.m2 \
-    -Dmaven.multiModuleProjectDirectory=/spring-petclinic \
-    -Dmaven.compiler.useIncrementalCompilation=false \
-    org.apache.maven.wrapper.MavenWrapperMain \
+docker run \
+    ${DOCKER_OPTS} \
+    ${PETCLINIC_TAG} \
+    ${MAVEN_COMMAND} \
     test
