@@ -6,7 +6,7 @@ on:
 
 env:
   image-name: ubuntu/chiselled-jre:test
-  build-image-name: ubuntu/chiselled-jre:test-builder
+  build-image-name: temurin-jdk8-builder:test
 
 jobs:
   build:
