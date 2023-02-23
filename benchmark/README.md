@@ -1,6 +1,6 @@
 # Acme Air Sample and Benchmark (monolithic simple spring boot version)
 
-This application shows an implementation of a fictitious airline called "Acme Air".  The application was built with some key business requirements: the ability to scale to billions of web API calls per day, the need to develop and deploy the application targeting multiple cloud platforms (including Public, Private and hybrid).  The application can be deployed both on-prem as well as on Cloud platforms.
+This application shows an implementation of a fictitious airline called "Acme Air".  The application was built with some key business requirements: the ability to scale to billions of web API calls per day, and the need to develop and deploy the application targeting multiple cloud platforms (including Public, Private and hybrid).  The application can be deployed both on-prem as well as on Cloud platforms.
 
 This version of acmeair supports deployment to:
     - WebSphere Liberty Profile to Mongodb
