@@ -10,9 +10,12 @@ pushd ${PROJECT}
 
 mvn package
 
-cp target/*.war ../acmeair-liberty/
-cp target/*.war ../acmeair-tomcat/
+cp target/acmeair-java-2.0.0-SNAPSHOT.war ../acmeair-liberty/
+cp target/acmeair-java-2.0.0-SNAPSHOT.war ../acmeair-tomcat/
 
 popd
 
 docker build -t acmeair-liberty acmeair-liberty
+docker build -t acmeair-cliberty acmeair-cliberty
+docker build -t acmeair-tomcat acmeair-tomcat
+docker build -t acmeair-ctomcat acmeair-ctomcat
