@@ -149,7 +149,10 @@
       </Realm>
 
       <Host name="localhost"  appBase="webapps"
-            unpackWARs="false" autoDeploy="true" createDirs="false">
+            deployOnStartup="false"
+            unpackWARs="false"
+            autoDeploy="false"
+            createDirs="false">
           <Context path="" docBase="acmeair-java-2.0.0-SNAPSHOT"/>
 
         <!-- SingleSignOn valve, share authentication between web applications
