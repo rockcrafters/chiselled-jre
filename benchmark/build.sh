@@ -1,10 +1,11 @@
 #!/bin/bash
 PROJECT=acmeair-monolithic-java
+TAG=chiselled-demo
 ACMEAIR_REPO=https://github.com/vpa1977/${PROJECT}
 
-git clone $ACMEAIR_REPO || \
+git clone --branch ${TAG} ${ACMEAIR_REPO} || \
     (cd ${PROJECT} && \
-     git pull)
+     git checkout ${TAG})
 
 pushd ${PROJECT}
 
