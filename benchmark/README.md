@@ -8,7 +8,7 @@ This version of acmeair supports deployment to:
 
 # Building & Running
 
-Run `./build.sh` to  clone and build acmeair project.
+Run `./build.sh` to clone and build acmeair project.
 
 ## Official Docker Images
 
