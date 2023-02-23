@@ -4,7 +4,7 @@ services:
     container_name: acmeair-db
     image: mongo
     ports:
-      - "27020:27020"
+      - "27017:27017"
     networks:
       - acme
 
