@@ -4,7 +4,7 @@ ACMEAIR_REPO=https://github.com/vpa1977/${PROJECT}
 
 git clone $ACMEAIR_REPO || \
     (cd ${PROJECT} && \
-     git checkout ${PETCLINIC_TAG} &&
+     git pull &&
      git reset --hard)
 
 cd ${PROJECT}
