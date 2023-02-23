@@ -8,7 +8,7 @@ git clone $ACMEAIR_REPO || \
 
 pushd ${PROJECT}
 
-mvn package
+mvn clean package -Pexternal-tomcat
 
 cp target/acmeair-java-2.0.0-SNAPSHOT.war ../acmeair-liberty/
 cp target/acmeair-java-2.0.0-SNAPSHOT.war ../acmeair-tomcat/
