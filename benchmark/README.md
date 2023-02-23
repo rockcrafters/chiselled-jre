@@ -29,4 +29,6 @@ Wait for the application startup and navigate to http://localhost:9080/ to explo
 
 Run `(cd ./acmeair-monolithic-java/jmeter/ && ./build.sh)` to prepare the environment.
 
+Start the application and load the database by navigating to http://localhost:9080/rest/info/loader/load?numCustomers=10000.
+
 Running test in GUI: `(cd ./acmeair-monolithic-java/jmeter/ && ./apache-jmeter-5.5/bin/jmeter.sh -DusePureIDs=true )`
