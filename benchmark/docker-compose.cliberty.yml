@@ -19,7 +19,8 @@ services:
       - "7777:7777"
     environment:
       - MONGO_HOST=acmeair-db
-
+    tmpfs:
+      - /tmp
 networks:
   acme:
     driver: bridge
