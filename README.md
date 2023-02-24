@@ -18,7 +18,7 @@ This section highlights differences with the `eclipse-temurin:8u352-b08-jre-jamm
 | ubuntu/chiselled-jre|8_edge| 123MB|46M |
 
 The major points of difference are:
-- /bin and /usr/bin are removed, which occupy 20MB compressed in Temurin
+- `/bin` and `/usr/bin` are removed, which occupy 20MB (compressed) in Temurin
 - /var is removed, which occupies 7.7MB due to dpkg
 - only minimal set of libraries is present in /usr/lib/x86_64-linux-gnu, saving 39M
 - contents of /usr/share are not present (31MB), assuming that for things like local time zone information, it is either mapped into the container, or containers run in GMT.
