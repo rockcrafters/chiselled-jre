@@ -10,9 +10,9 @@ git clone --branch ${TAG} ${ACMEAIR_REPO} || \
 pushd ${PROJECT}
 
 mvn clean package -Pexternal-tomcat
-
-cp target/acmeair-java-2.0.0-SNAPSHOT.war ../acmeair-liberty/
 cp target/acmeair-java-2.0.0-SNAPSHOT.war ../acmeair-tomcat/
+mvn -DskipTests=true  package -Pexternal-liberty
+cp target/acmeair-java-2.0.0-SNAPSHOT.jar ../acmeair-liberty/
 
 popd
 

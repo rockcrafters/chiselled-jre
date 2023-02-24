@@ -5,7 +5,8 @@ FROM $BASE_IMAGE
 
 USER 1001:0
 
-COPY --from=builder /opt /opt
+COPY --from=builder /opt/ibm/fixes /opt/ibm/fixes
+COPY --from=builder /opt/ibm/wlp /opt/ibm/wlp
 
 # liberty launcher support
 COPY --from=builder /bin/grep /usr/bin/
