@@ -44,7 +44,7 @@ The table below shows average startup times (seconds):
 |-----|---|----| -------------|
 |1.03 |0.99328125| 1.04615625|0.989625|
 
-Adding CDS to `acmeair` allows 5% startup improvement at expense of 6MB compressed and 20MB uncompressed image size increase.
+Adding CDS (Class Data Sharing) to `acmeair` allows a 5% startup improvement at expense of a 6MB compressed (and 20MB uncompressed) image size increase.
 
 ### Throughput tests
 
