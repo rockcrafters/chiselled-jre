@@ -52,7 +52,7 @@ The throughput tests were performed using Apache JMeter 5.5 on `acmeair` applica
 
 The table below shows average requests per second:
 
-| WebSphere Liberty | WebSphere Liberty (chiselled) | Apache Tomcat | Apache Tomcat (chiselled) | Standalone (Temurin) | Standalone (Chiselled) |
+| WebSphere Liberty | WebSphere Liberty (chiselled) | Apache Tomcat | Apache Tomcat (chiselled) | Standalone (Temurin) | Standalone (chiselled) |
 |-------------------|-------------------------------|---------------|-------------|---------|--------|
 | 1553.7 | 1704.5 | 1687.7 | 1733.2 | 1778 | 1773.6 |
 
