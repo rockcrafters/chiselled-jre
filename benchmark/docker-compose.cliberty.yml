@@ -1,0 +1,26 @@
+version: '3'
+services:
+  acmeair-db:
+    container_name: acmeair-db
+    image: mongo
+    ports:
+      - "27017:27017"
+    networks:
+      - acme
+
+  liberty:
+    container_name: acmeair-cliberty
+    image: acmeair-cliberty
+    networks:
+      - acme
+    ports:
+      - "9080:9080"
+      - "9443:9443"
+      - "7777:7777"
+    environment:
+      - MONGO_HOST=acmeair-db
+    tmpfs:
+      - /tmp
+networks:
+  acme:
+    driver: bridge
