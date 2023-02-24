@@ -38,7 +38,7 @@ Below are image sizes of the deployed `acmeair` benchmark application
 
 ### Startup time
 
-The startup times were evaluated by starting a Spring Boot standalone container repeatedly and measuring total JVM time until start of the application as per Spring Boot logs.
+The startup times were evaluated by starting a Spring Boot standalone container repeatedly and measuring the total JVM time until the start of the application as per Spring Boot logs.
 The table below shows average startup times (seconds):
 |chiselled-jre| chiselled-jre with Class Data Caching| Temurin | Temurin with Class Data Caching|
 |-----|---|----| -------------|
