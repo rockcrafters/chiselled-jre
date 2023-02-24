@@ -15,7 +15,7 @@ This section highlights differences with the `eclipse-temurin:8u352-b08-jre-jamm
 |Image|Tag|Uncompressed Size| Compressed Size|
 |-----|---|----| ----------------------------|
 | eclipse-temurin|8u352-b08-jre-jammy|221MB|80M|
-| ubuntu/chiselled-jre|8_edge| 123MB|46M |
+| ubuntu/chiselled-jre|8-22.04_edge| 123MB|46M |
 
 The major points of difference are:
 - `/bin` and `/usr/bin` are removed, which occupy 20MB (compressed) in Temurin
