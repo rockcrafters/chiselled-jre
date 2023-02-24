@@ -48,7 +48,7 @@ Adding CDS (Class Data Sharing) to `acmeair` allows a 5% startup improvement at 
 
 ### Throughput tests
 
-The throughput tests were performed using Apache JMeter 5.5 on `acmeair` application using the following command: ``./apache-jmeter-5.5/bin/jmeter -n -t AcmeAir-v5.jmx -DusePureIDs=true -JHOST=localhost -JPORT=9080 -j performance.log -JTHREAD=1 -JUSER=9999 -JDURATION=120 -JRAMP=60 ;``
+The throughput tests were performed using Apache JMeter 5.5 on `acmeair` application with the following command: ``./apache-jmeter-5.5/bin/jmeter -n -t AcmeAir-v5.jmx -DusePureIDs=true -JHOST=localhost -JPORT=9080 -j performance.log -JTHREAD=1 -JUSER=9999 -JDURATION=120 -JRAMP=60 ;``
 
 The table below shows average requests per second:
 
