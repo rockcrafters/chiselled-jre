@@ -8,7 +8,7 @@ Read more about the repository structure and build automation in [here](<https:/
 
 ## Image characteristics
 
-This section highlights differences with `eclipse-temurin:8u352-b08-jre-jammy` image (as at the time of writing 8u362 is not yet deployed to Jammy).
+This section highlights differences with the `eclipse-temurin:8u352-b08-jre-jammy` image (as at the time of writing, 8u362 is not yet deployed to Jammy).
 
 ### Image size
 
