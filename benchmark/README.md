@@ -14,6 +14,7 @@ Run `./build.sh` to clone and build acmeair project.
 
 Run `docker-compose -f docker-compose.liberty.yml up` to bring up WebSphere liberty.
 Run `docker-compose -f docker-compose.tomcat.yml up` to bring up Tomcat.
+Run `docker-compose -f docker-compose.standalone-temurin.yml up` to bring up standalone Spring Boot app.
 
 Wait for the application startup and navigate to http://localhost:9080/ to explore the application.
 
@@ -21,6 +22,7 @@ Wait for the application startup and navigate to http://localhost:9080/ to explo
 
 Run `docker-compose -f docker-compose.cliberty.yml up` to bring up chiselled WebSphere liberty.
 Run `docker-compose -f docker-compose.ctomcat.yml up` to bring up Tomcat.
+Run `docker-compose -f docker-compose.standalone-chisel.yml up` to bring up standalone Spring Boot app.
 
 Wait for the application startup and navigate to http://localhost:9080/ to explore the application.
 
