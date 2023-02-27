@@ -8,7 +8,7 @@ Read more about the repository structure and build automation in [here](<https:/
 
 ## Image characteristics
 
-According to Jetbrains 2022 survey of [Developer Ecosystem](https://www.jetbrains.com/lp/devecosystem-2022/java/) 60% of the developers still regularily used Java 8, 59% developed applications for Apache Tomcat and 67% used Spring Boot as an alternative to an application server.
+According to JetBrains' 2022 [Java Developer Ecosystem](https://www.jetbrains.com/lp/devecosystem-2022/java/) survey, 60% of the developers still regularly used Java 8, 59% developed applications for Apache Tomcat and 67% used Spring Boot as an alternative to an application server.
 
 New Relic 2022 [Java Ecosystem report](https://newrelic.com/resources/report/2022-state-of-java-ecosystem) listed following top JDK vendors:
  - Oracle Corporation 34.48%
