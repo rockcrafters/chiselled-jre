@@ -94,7 +94,7 @@ This test shows no significant differences in performance for OpenJDK-based test
 
 ### Conclusion
 
-The chiselled JRE image of OpenJDK 8 provides a 42.5% reduction in the size of the compressed image compared to Temurin and 11% larger than Amazon Corretto image.
+The chiselled JRE image of OpenJDK 8 provides a 42.5% reduction in the size of the compressed image compared to Temurin and 11% larger than the Amazon Corretto image.
 The chiselled JRE image does not degrade throughput or startup performance.
 
 ## License
