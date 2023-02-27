@@ -9,8 +9,8 @@ services:
       - acme
 
   tomcat:
-    container_name: acmeair-standalone-temurin
-    image: acmeair-standalone-temurin
+    container_name: acmeair-standalone-chisel
+    image: acmeair-standalone-chisel
     networks:
       - acme
     ports:
