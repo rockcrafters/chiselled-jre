@@ -17,7 +17,7 @@ New Relic 2022 [Java Ecosystem report](https://newrelic.com/resources/report/202
  - Azul Zulu build of OpenJDK 16%
 
 Snyk 2021 [JVM Ecosystem](https://snyk.io/jvm-ecosystem-report-2021/) had the following breakdown:
- - Eclipse Adoptimum 44%
+ - Eclipse Adoptium 44%
  - Oracle Corporation OpenJDK 28%
  - Oracle Corporation JDK 23%
  - Azul Zulu build of OpenJDK 16%
