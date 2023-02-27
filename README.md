@@ -32,7 +32,7 @@ This section provides a comparison with readily-available JRE 8 images for Ubunt
  - Amazon: `amazoncorretto:8u352-alpine3.14-jre`
 
 Azul Zulu does not provide a JRE image: https://hub.docker.com/r/azul/zulu-openjdk and it was not evaluated.
-Oracle does not provide official image of the Java Runtime Environment 8 and it was not evaluated.
+Oracle does not provide an official image of the Java Runtime Environment 8 and it was not evaluated.
 
 ### Image size
 
