@@ -33,7 +33,8 @@ RUN mkdir -p /rootfs \
     && chisel cut --release /opt/chisel-releases --root /rootfs \
         openjdk-8-jre-headless_bins \
         media-types_data \
-        libglib2.0-0_libs \
+	libffi8_libs \
+	libmount1_libs \
         libjpeg-turbo8_libs
 RUN install -d -m 0755 -o $UID -g $GID /rootfs/home/$USER \
     && echo -e "root:x:0:\n$GROUP:x:$GID:" >/rootfs/etc/group \
