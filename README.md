@@ -55,7 +55,7 @@ The major points of difference with Corretto image are:
  - Corretto does not provide `glib` libraries imported by the URL proxy selector. `java.net.ProxySelector.getDefault()` call will always return `Direct Proxy`.
 
 The JRE differences itself are minimal. Th chiselled image removes libawt_xawt.so and libsplashscren.so along with accessibility support. Executables, except `java`, are removed from `jre/bin`.
-Note: chiselled docker at the moment does not provide classes.jsa (Class Data Cache) in line with Temurin JRE and it has to be generated.
+Note: chiselled images, at the moment, do not provide classes.jsa (Class Data Cache) in line with Temurin JRE and it has to be generated.
 
 Below are image sizes of the deployed `acmeair` benchmark application
 |Image|Base Image|Uncompressed Size| Compressed Size|
