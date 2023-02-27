@@ -13,7 +13,7 @@ According to JetBrains' 2022 [Java Developer Ecosystem](https://www.jetbrains.co
 New Relic 2022 [Java Ecosystem report](https://newrelic.com/resources/report/2022-state-of-java-ecosystem) listed the following top JDK vendors:
  - Oracle Corporation 34.48%
  - Amazon 22.04%
- - Eclipse Adoptimum 11.48%
+ - Eclipse Adoptium 11.48%
  - Azul Zulu build of OpenJDK 16%
 
 Snyk 2021 [JVM Ecosystem](https://snyk.io/jvm-ecosystem-report-2021/) had the following breakdown:
