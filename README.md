@@ -25,7 +25,7 @@ Snyk 2021 [JVM Ecosystem](https://snyk.io/jvm-ecosystem-report-2021/) had the fo
 
 The differences in the vendor distribution could be attributed to the audience providing survey responses.
 
-The chiselled JRE container is built based on Ubuntu 22.04 version of Java 8 runtime - `8u352-b08`.
+The chiselled JRE container is built based on the Ubuntu 22.04 version of Java 8 runtime - `8u352-b08`.
 
 This section provides a comparison with readily-available JRE 8 images for Ubuntu 22.04:
  - Eclipse Adoptium: `eclipse-temurin:8u352-b08-jre-jammy`
