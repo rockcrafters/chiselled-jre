@@ -51,8 +51,8 @@ The major points of difference with Temurin image are:
 
 The major points of difference with Corretto image are:
  - Corretto deploys busybox as a shell
- - Corretto does not have fontconfig/fonts libraries. This causes `Font.createFont()` to fail with `java.lang.UnsatisfiedLinkError`.
- - Corretto does not provide `glibc` libraries imported by URL proxy selector. Direct (no proxy) mode is always assumed.
+ - Corretto does not have fontconfig/fonts libraries. This causes `java.awt.Font.createFont()` to fail with `java.lang.UnsatisfiedLinkError`.
+ - Corretto does not provide `glibc` libraries imported by URL proxy selector. `java.net.ProxySelector.getDefault()` call with always return `Direct Proxy`.
 
 The JRE differences itself are minimal. Th chiselled image removes libawt_xawt.so and libsplashscren.so along with accessibility support. Executables, except `java`, are removed from `jre/bin`.
 Note: chiselled docker at the moment does not provide classes.jsa (Class Data Cache) in line with Temurin JRE and it has to be generated.
