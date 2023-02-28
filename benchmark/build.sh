@@ -15,6 +15,7 @@ mvn -DskipTests=true  package -Pexternal-liberty
 cp target/acmeair-java-2.0.0-SNAPSHOT.jar ../acmeair-liberty/
 cp target/acmeair-java-2.0.0-SNAPSHOT.jar ../acmeair-standalone-chisel/
 cp target/acmeair-java-2.0.0-SNAPSHOT.jar ../acmeair-standalone-temurin/
+cp target/acmeair-java-2.0.0-SNAPSHOT.jar ../acmeair-standalone-corretto/
 
 popd
 
@@ -24,3 +25,4 @@ docker build -t acmeair-tomcat acmeair-tomcat
 docker build -t acmeair-ctomcat acmeair-ctomcat
 docker build -t acmeair-standalone-chisel acmeair-standalone-chisel
 docker build -t acmeair-standalone-temurin acmeair-standalone-temurin
+docker build -t acmeair-standalone-corretto acmeair-standalone-corretto
