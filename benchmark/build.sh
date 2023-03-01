@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+
 PROJECT=acmeair-monolithic-java
 TAG=chiselled-demo
 ACMEAIR_REPO=https://github.com/vpa1977/${PROJECT}
