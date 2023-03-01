@@ -91,6 +91,13 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
+      # Lint the Dockerfiles
+      - name: Lint the Dockerfile
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: chiselled-jre/Dockerfile.${{ matrix.ubuntu-release }}
+          ignore: DL3008,DL3015,SC3028
+
       - name: Build the chiselled-jre image
         run: |
           docker buildx build \
