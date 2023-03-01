@@ -28,6 +28,7 @@ ARG USER
 ARG UID
 ARG GROUP
 ARG GID
+SHELL ["/bin/bash", "-oeux", "pipefail", "-c"]
 COPY --from=chisel /opt/chisel-releases /opt/chisel-releases
 RUN mkdir -p /rootfs \
     && chisel cut --release /opt/chisel-releases --root /rootfs \
