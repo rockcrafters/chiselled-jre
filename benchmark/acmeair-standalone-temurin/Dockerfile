@@ -1,4 +1,4 @@
-FROM eclipse-temurin:8u352-b08-jre-jammy
+FROM eclipse-temurin:8u362-b09-jre-jammy
 
 ADD acmeair-java-2.0.0-SNAPSHOT.jar /
 # uncomment to enabled CDS
