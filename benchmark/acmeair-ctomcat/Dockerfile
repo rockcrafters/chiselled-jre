@@ -1,7 +1,11 @@
 ARG BASE_IMAGE=ubuntu/chiselled-jre:8_edge
 ARG TOMCAT_IMAGE=acmeair-tomcat
+# Use x86_64 for amd64 and aarch64 for arm64
+ARG ARCH=x86_64
 FROM $TOMCAT_IMAGE as builder
 FROM $BASE_IMAGE
+ARG ARCH
+ENV ARCH=${ARCH}
 
 COPY --chown=$UID:$GID --from=builder \
     /usr/local/tomcat /usr/local/tomcat
@@ -14,18 +18,13 @@ COPY --from=builder /usr/bin/dirname /usr/bin/dirname
 
 # tomcat native support
 #(openssl)
-COPY --from=builder /usr/lib/x86_64-linux-gnu/engines-3/*.so /usr/lib/x86_64-linux-gnu/engines-3/
-COPY --from=builder /usr/lib/x86_64-linux-gnu/libcrypto.so.3 /usr/lib/x86_64-linux-gnu/libcrypto.so.3
-COPY --from=builder /usr/lib/x86_64-linux-gnu/libssl.so.3 /usr/lib/x86_64-linux-gnu/libssl.so.3
-COPY --from=builder /usr/lib/x86_64-linux-gnu/ossl-modules/* /usr/lib/x86_64-linux-gnu/ossl-modules/
+COPY --from=builder /usr/lib/${ARCH}-linux-gnu/engines-3/*.so /usr/lib/${ARCH}-linux-gnu/engines-3/
+COPY --from=builder /usr/lib/${ARCH}-linux-gnu/libcrypto.so.3 /usr/lib/${ARCH}-linux-gnu/libcrypto.so.3
+COPY --from=builder /usr/lib/${ARCH}-linux-gnu/libssl.so.3 /usr/lib/${ARCH}-linux-gnu/libssl.so.3
+COPY --from=builder /usr/lib/${ARCH}-linux-gnu/ossl-modules/* /usr/lib/${ARCH}-linux-gnu/ossl-modules/
 # libapr
-COPY --from=builder /usr/lib/x86_64-linux-gnu/libapr-1.so.0 /usr/lib/x86_64-linux-gnu/libapr-1.so.0
-COPY --from=builder  /usr/lib/x86_64-linux-gnu/libuuid.so.1 /usr/lib/x86_64-linux-gnu/libuuid.so.1
-
-# add default logging properties
-COPY --from=builder /opt/java/openjdk/lib/logging.properties /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/
-
-ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre
+COPY --from=builder /usr/lib/${ARCH}-linux-gnu/libapr-1.so.0 /usr/lib/${ARCH}-linux-gnu/libapr-1.so.0
+COPY --from=builder  /usr/lib/${ARCH}-linux-gnu/libuuid.so.1 /usr/lib/${ARCH}-linux-gnu/libuuid.so.1
 
 ENV CATALINA_HOME=/usr/local/tomcat
 ENV PATH=$CATALINA_HOME/bin:$PATH
