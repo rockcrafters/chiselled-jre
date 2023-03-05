@@ -64,7 +64,7 @@ jobs:
           -t ${{ env.build-image-name }} \
           --build-arg UID=$(id -u ${USER}) \
           --build-arg GID=$(id -g ${USER}) \
-          -f tests/Dockerfile.${{ matrix.ubuntu-release }} \
+          -f tests/containers/builder/Dockerfile.${{ matrix.ubuntu-release }} \
           tests
 
       - name: Run Tests

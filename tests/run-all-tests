@@ -24,9 +24,12 @@ CURRENT_DIR="$(dirname $(readlink -f $0))"
 
 for test_dir in "$CURRENT_DIR"/*/
 do
-    pushd $test_dir
+    if [[ -x ${test_dir}/runtest ]]; then
 
-    ./runtest
+        pushd $test_dir
 
-    popd
+        ./runtest
+
+        popd
+    fi
 done
