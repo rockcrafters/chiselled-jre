@@ -6,13 +6,8 @@ set -ex
 # container and then builds and runs PDFBox tests
 echo "Running Apache PDFBox self-tests"
 
-if [ -z $BUILD_IMAGE ]; then
-    echo 'Please define $BUILD_IMAGE'
-    exit 1
-fi
-
-if [ -z $BASE_IMAGE ]; then
-    echo 'Please define $BASE_IMAGE'
+if [ -z $MAVEN_IMAGE ]; then
+    echo 'Please define $MAVEN_IMAGE'
     exit 1
 fi
 
@@ -21,7 +16,6 @@ if [ -z $M2_CACHE ]; then
     exit 1
 fi
 
-MAVEN_IMAGE=maven:3.9.0-eclipse-temurin-8
 VERSION=2.0.27
 APP=pdfbox-${VERSION}
 TEST_DIR=`pwd`
@@ -38,15 +32,9 @@ if [ ! -d ${APP} ]; then
     (unzip -o ${APP}-src.zip && cd ${APP} && git apply ../TestCreateSignature.patch)
 fi
 
-# create the chiselled JRE docker with maven
-docker build -t chiselled-maven \
-    --build-arg MAVEN_IMAGE=${MAVEN_IMAGE} \
-    --build-arg BASE_IMAGE=${BASE_IMAGE:-ubuntu/chiselled-jre:8_edge} \
-    .
-
 # build and tests with chiselled jre
 docker run \
     ${DOCKER_OPTS} \
-    chiselled-maven \
+    ${MAVEN_IMAGE} \
         -Dmaven.repo.local="${M2_CACHE}" \
         test
