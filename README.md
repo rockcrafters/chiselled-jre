@@ -29,9 +29,9 @@ The cloud vendors traditionally offered `amd64`-based virtual machines, though r
 
 The chiselled JRE container is built based on the Ubuntu 22.04 version of Java 8 runtime - `8u362-ga`.
 
-This section provides a comparison with readily-available JRE 8 images for Ubuntu 22.04:
- - Eclipse Adoptium: `eclipse-temurin:8u362-b09-jre-jammy`
- - Amazon: `amazoncorretto:8u362-alpine3.14-jre`
+This section provides a comparison with readily-available JRE 8 images from the most popular distributions:
+ - Eclipse Adoptium: [`eclipse-temurin:8u362-b09-jre-jammy`](https://hub.docker.com/_/eclipse-temurin), [Dockerfile](https://github.com/adoptium/containers/blob/faa5fb7621fd9b0672b83f398d3c6ee579534015/8/jre/ubuntu/jammy/Dockerfile.releases.full)
+ - Amazon: [`amazoncorretto:8u362-alpine3.14-jre`](https://hub.docker.com/_/amazoncorretto), [Dockerfile](https://github.com/corretto/corretto-docker/blob/67924db8205a880aa9508d8a364ee98915f303f8/8/jre/alpine/3.14/Dockerfile)
 
 Azul Zulu does not provide a JRE image: https://hub.docker.com/r/azul/zulu-openjdk and it was not evaluated.
 
@@ -65,7 +65,7 @@ The points of difference with the Temurin image are:
 
 The points of difference with the Amazon Corretto image are:
  - Corretto deploys busybox as a shell
- - Corretto does not have fontconfig/fonts libraries. This causes `java.awt.Font.createFont()` to fail with `java.lang.UnsatisfiedLinkError`.
+ - Corretto does not have fontconfig/fonts libraries. This causes `java.awt.Font.createFont()` to fail with `java.lang.UnsatisfiedLinkError`. Removing font support will bring the chiselled JRE size on par with the Corretto image.
  - No JRE is provided for ARM64, there is only JDK build
 
 The JRE differences themselves are minimal. The chiselled image removes `libawt_xawt.so` and `libsplashscren.so` along with accessibility support. Only 'java' executable is left in `jre/bin`.
