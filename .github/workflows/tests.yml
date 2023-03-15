@@ -7,6 +7,8 @@ on:
 env:
   image-name: ubuntu/chiselled-jre:test
   build-image-name: temurin-jdk8-builder:test
+  maven-image-name: temurin-jdk8-maven:test
+  maven-image-base: maven:3.9.0-eclipse-temurin-8
 
 jobs:
   build:
@@ -65,14 +67,26 @@ jobs:
           --build-arg UID=$(id -u ${USER}) \
           --build-arg GID=$(id -g ${USER}) \
           -f tests/containers/builder/Dockerfile.${{ matrix.ubuntu-release }} \
-          tests
+          tests/containers/builder
+
+      - name: Build Maven docker image
+        run: |
+          docker build \
+          -t ${{ env.maven-image-name }} \
+          --build-arg UID=$(id -u ${USER}) \
+          --build-arg GID=$(id -g ${USER}) \
+          --build-arg BASE_IMAGE=${{ env.image-name }} \
+          --build-arg MAVEN_IMAGE=${{ env.maven-image-base }} \
+          -f tests/containers/maven/Dockerfile.${{ matrix.ubuntu-release }} \
+          tests/containers/maven
 
       - name: Run Tests
         working-directory: ${{ github.workspace }}/tests/
         run: |
           ./run-all-tests ${{ env.image-name }} \
                           ${{ env.build-image-name }} \
-                          ${{ runner.temp }}/.m2
+                          ${{ runner.temp }}/.m2 \
+                          ${{ env.maven-image-name }}
   multi-arch-build:
     runs-on: ubuntu-22.04
     name: Multi Architecture Build

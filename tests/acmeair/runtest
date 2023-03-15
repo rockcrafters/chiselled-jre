@@ -2,9 +2,8 @@
 
 set -ex
 
-# This tests downloads PDFBox, patches out flaky test, copies javac in the
-# container and then builds and runs PDFBox tests
-echo "Running Apache PDFBox self-tests"
+# This test builds acmeair application and runs self-tests
+echo "Running AcmeAir self-tests"
 
 if [ -z $MAVEN_IMAGE ]; then
     echo 'Please define $MAVEN_IMAGE'
@@ -16,21 +15,21 @@ if [ -z $M2_CACHE ]; then
     exit 1
 fi
 
-VERSION=2.0.27
-APP=pdfbox-${VERSION}
 TEST_DIR=`pwd`
+PROJECT=acmeair-monolithic-java
+TAG=chiselled-test
+ACMEAIR_REPO=https://github.com/vpa1977/${PROJECT}
 
 DOCKER_OPTS="--rm  \
     --tmpfs /tmp:exec \
     -u app \
     -v ${M2_CACHE}:${M2_CACHE} \
     -v ${TEST_DIR}:${TEST_DIR} \
-    -w ${TEST_DIR}/${APP} "
+    -w ${TEST_DIR}/${PROJECT} "
 
-if [ ! -d ${APP} ]; then
-    curl -o ${APP}-src.zip  https://dlcdn.apache.org/pdfbox/${VERSION}/${APP}-src.zip
-    (unzip -o ${APP}-src.zip && cd ${APP} && git apply ../TestCreateSignature.patch)
-fi
+git clone --branch ${TAG} ${ACMEAIR_REPO} || \
+    (cd ${PROJECT} && \
+     git checkout ${TAG})
 
 # build and tests with chiselled jre
 docker run \
