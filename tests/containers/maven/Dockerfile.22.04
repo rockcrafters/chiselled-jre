@@ -1,5 +1,5 @@
 ARG BASE_IMAGE=ubuntu/chiselled-jre:8_edge
-ARG MAVEN_IMAGE=maven:3.9.0-eclipse-temurin-8
+ARG MAVEN_IMAGE=maven:3.9.1-eclipse-temurin-8
 FROM $MAVEN_IMAGE as builder
 
 FROM $BASE_IMAGE
