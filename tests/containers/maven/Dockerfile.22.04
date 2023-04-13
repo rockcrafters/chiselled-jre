@@ -17,5 +17,11 @@ ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 # Add javac compiler for maven (it always recompiles package-info.java)
 COPY --from=builder /opt/java/openjdk/bin/javac \
     /usr/lib/jvm/java-17-openjdk-amd64/bin/
+# compatibility signatures
+COPY --from=builder /opt/java/openjdk/lib/ct.sym \
+    /usr/lib/jvm/java-17-openjdk-amd64/lib/
+# additional jars
+COPY --from=builder /opt/java/openjdk/lib/*.jar \
+    /usr/lib/jvm/java-17-openjdk-amd64/lib/
 
 ENTRYPOINT [ "/usr/share/maven/bin/mvn" ]
