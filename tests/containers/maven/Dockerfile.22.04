@@ -1,5 +1,5 @@
-ARG BASE_IMAGE=ubuntu/chiselled-jre:8_edge
-ARG MAVEN_IMAGE=maven:3.9.1-eclipse-temurin-8
+ARG BASE_IMAGE=ubuntu/chiselled-jre:17_edge
+ARG MAVEN_IMAGE=maven:3.9.1-eclipse-temurin-17
 FROM $MAVEN_IMAGE as builder
 
 FROM $BASE_IMAGE
@@ -12,12 +12,10 @@ COPY --from=builder /usr/bin/dirname /usr/bin/dirname
 # other base might require copying those folders
 COPY --from=builder /usr/share/maven /usr/share/maven
 
-ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre
+ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 
 # Add javac compiler for maven (it always recompiles package-info.java)
 COPY --from=builder /opt/java/openjdk/bin/javac \
-    /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/
-COPY --from=builder /opt/java/openjdk/lib/tools.jar \
-    /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/
+    /usr/lib/jvm/java-17-openjdk-amd64/jre/bin/
 
 ENTRYPOINT [ "/usr/share/maven/bin/mvn" ]

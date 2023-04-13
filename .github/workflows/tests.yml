@@ -6,8 +6,8 @@ on:
 
 env:
   image-name: ubuntu/chiselled-jre:test
-  build-image-name: temurin-jdk8-builder:test
-  maven-image-name: temurin-jdk8-maven:test
+  build-image-name: temurin-jdk17-builder:test
+  maven-image-name: temurin-jdk17-maven:test
   maven-image-base: maven:3.9.0-eclipse-temurin-8
 
 jobs:
@@ -25,7 +25,7 @@ jobs:
       - uses: actions/setup-java@v3
         with:
           distribution: 'temurin' # See 'Supported distributions' for available options
-          java-version: '8'
+          java-version: '17'
 
       - name: Tests Maven cache
         uses: actions/cache@v3

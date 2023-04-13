@@ -1,4 +1,4 @@
-ARG BUILD_IMAGE=eclipse-temurin:8u362-b09-jdk-jammy
+ARG BUILD_IMAGE=eclipse-temurin:17-jdk-jammy
 ARG USER=app
 ARG UID=101
 ARG GROUP=app
