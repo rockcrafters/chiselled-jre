@@ -12,8 +12,8 @@ env:
 
 jobs:
   build:
-#    runs-on: ubuntu-22.04
-    runs-on: self-hosted
+    runs-on: ubuntu-22.04
+#    runs-on: self-hosted
     name: Build and Test
     strategy:
       fail-fast: false
