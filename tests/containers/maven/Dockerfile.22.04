@@ -12,16 +12,16 @@ COPY --from=builder /usr/bin/dirname /usr/bin/dirname
 # other base might require copying those folders
 COPY --from=builder /usr/share/maven /usr/share/maven
 
-ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+ENV JAVA_HOME=/opt/java
 
 # Add javac compiler for maven (it always recompiles package-info.java)
 COPY --from=builder /opt/java/openjdk/bin/javac \
-    /usr/lib/jvm/java-17-openjdk-amd64/bin/
+    /opt/java/bin/
 # compatibility signatures
 COPY --from=builder /opt/java/openjdk/lib/ct.sym \
-    /usr/lib/jvm/java-17-openjdk-amd64/lib/
+    /opt/java/lib/
 # additional jars
 COPY --from=builder /opt/java/openjdk/lib/*.jar \
-    /usr/lib/jvm/java-17-openjdk-amd64/lib/
+    /opt/java/lib/
 
 ENTRYPOINT [ "/usr/share/maven/bin/mvn" ]
