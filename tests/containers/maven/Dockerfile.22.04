@@ -24,4 +24,8 @@ COPY --from=builder /opt/java/openjdk/lib/ct.sym \
 COPY --from=builder /opt/java/openjdk/lib/*.jar \
     /opt/java/lib/
 
+# copy modules
+COPY --from=builder /opt/java/openjdk/lib/modules \
+    /opt/java/lib/
+
 ENTRYPOINT [ "/usr/share/maven/bin/mvn" ]
