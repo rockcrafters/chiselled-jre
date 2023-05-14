@@ -3,8 +3,6 @@ set -ex
 
 # This test builds tests for spring-petclinic with Maven, copies class files
 # into the chiselled container and executes them in the container environemnt.
-# For OpenJDK 8 we need to use tag on the last commit that used spring-boot 2.X
-# as later version requires OpenJDK 17.
 
 echo "Running Spring Petclinic self-tests"
 
@@ -55,8 +53,7 @@ cp /bin/sh sh
 docker build --build-arg BASE_IMAGE=${BASE_IMAGE:-ubuntu/chiselled-jre:17_edge} \
     -t ${PETCLINIC_TAG} .
 
-# Build and run tests with JDK8 container. We should replace Temurin with
-# our dev container
+# We should replace Temurin with our dev container
 docker run \
     ${DOCKER_OPTS} \
     ${BUILD_IMAGE} \
