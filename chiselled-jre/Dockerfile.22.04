@@ -62,7 +62,7 @@ RUN mkdir -p /rootfs \
         libstdc++6_libs \
         zlib1g_libs \
         libgraphite2-3_libs \
-        libglib2.0-0_baselib \
+        libglib2.0-0_glib \
         base-files_bin
 RUN install -d -m 0755 -o $UID -g $GID /rootfs/home/$USER \
     && echo -e "root:x:0:\n$GROUP:x:$GID:" >/rootfs/etc/group \
