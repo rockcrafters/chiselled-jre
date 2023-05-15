@@ -6,7 +6,7 @@ ARG GID=101
 
 FROM golang:1.18 AS chisel
 ARG UBUNTU_RELEASE
-RUN git clone -b jre8-jammy-slices https://github.com/cjdcordeiro/chisel-releases /opt/chisel-releases \
+RUN git clone -b fixes-jre8-jammy-slices https://github.com/vpa1977/chisel-releases /opt/chisel-releases \
     && git clone --depth 1 -b main https://github.com/canonical/chisel /opt/chisel
 WORKDIR /opt/chisel
 RUN go generate internal/deb/version.go \
@@ -31,10 +31,13 @@ ARG GID
 SHELL ["/bin/bash", "-oeux", "pipefail", "-c"]
 COPY --from=chisel /opt/chisel-releases /opt/chisel-releases
 RUN mkdir -p /rootfs \
-    && chisel cut --release /opt/chisel-releases --root /rootfs \
-        openjdk-8-jre-headless_bins \
-        media-types_data \
-        libjpeg-turbo8_libs \
+      && chisel cut --release /opt/chisel-releases --root /rootfs \
+     openjdk-8-jre-headless_core  \
+     openjdk-8-jre-headless_security  \
+     openjdk-8-jre-headless_tools  \
+     openjdk-8-jre-headless_awt \
+     openjdk-8-jre-headless_management \
+     openjdk-8-jre-headless_devel \
 	base-files_bin \
     && ln -s "$(find /rootfs/usr/lib/jvm/java-8-openjdk-*/jre/bin -name java | sed 's/\/rootfs//')" /rootfs/usr/bin/
 RUN install -d -m 0755 -o $UID -g $GID /rootfs/home/$USER \
