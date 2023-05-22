@@ -43,6 +43,14 @@ jobs:
           restore-keys: |
             tests-petclinic-test-spring-petclinic
 
+      - name: Tests PDFBox
+        uses: actions/cache@v3
+        with:
+          path: tests/pdfbox/pdfbox
+          key: tests-pdfbox-test-pdbbox
+          restore-keys: |
+            tests-pdfbox-test-pdbbox
+
       - name: Build the chiselled-jre image
         run: |
           docker build \
