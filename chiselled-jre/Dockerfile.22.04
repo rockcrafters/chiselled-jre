@@ -41,7 +41,7 @@ RUN mkdir -p /rootfs \
         openjdk-8-jre-headless_jplis \
         openjdk-8-jre-headless_jndidns \
         openjdk-8-jre-headless_zipfs \
-        openjdk-8-jre-headless_stcp \
+        openjdk-8-jre-headless_sctp \
         media-types_data \
         base-files_bin \
     && ln -s "$(find /rootfs/usr/lib/jvm/java-8-openjdk-*/jre/bin -name java | sed 's/\/rootfs//')" /rootfs/usr/bin/
