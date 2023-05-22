@@ -20,6 +20,8 @@ VERSION=2.0.27
 APP=pdfbox-${VERSION}
 TEST_DIR=`pwd`
 
+docker build -t ${APP} --build-arg MAVEN_IMAGE=${MAVEN_IMAGE} .
+
 DOCKER_OPTS="--rm  \
     --tmpfs /tmp:exec \
     -u app \
@@ -35,6 +37,6 @@ fi
 # build and tests with chiselled jre
 docker run \
     ${DOCKER_OPTS} \
-    ${MAVEN_IMAGE} \
+    ${APP} \
         -Dmaven.repo.local="${M2_CACHE}" \
         test
