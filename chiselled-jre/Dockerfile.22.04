@@ -6,7 +6,7 @@ ARG GID=101
 
 FROM golang:1.18 AS chisel
 ARG UBUNTU_RELEASE
-RUN git clone -b fixes-jre8-jammy-slices https://github.com/vpa1977/chisel-releases /opt/chisel-releases \
+RUN git clone -b jre8-jammy-slices https://github.com/cjdcordeiro/chisel-releases /opt/chisel-releases \
     && git clone --depth 1 -b main https://github.com/canonical/chisel /opt/chisel
 WORKDIR /opt/chisel
 RUN go generate internal/deb/version.go \
@@ -35,10 +35,8 @@ RUN mkdir -p /rootfs \
         openjdk-8-jre-headless_core \
         openjdk-8-jre-headless_locale \
         openjdk-8-jre-headless_security \
-        openjdk-8-jre-headless_awt \
         openjdk-8-jre-headless_management \
         openjdk-8-jre-headless_jfr \
-        openjdk-8-jre-headless_profiledebug \
         openjdk-8-jre-headless_tools \
         openjdk-8-jre-headless_jplis \
         openjdk-8-jre-headless_jndidns \

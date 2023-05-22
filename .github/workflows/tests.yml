@@ -35,14 +35,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      - name: Tests PDFBox
-        uses: actions/cache@v3
-        with:
-          path: tests/pdfbox/pdfbox-2.0.27
-          key: tests-pdfbox-pdfbox-2.0.27
-          restore-keys: |
-            tests-pdfbox-pdfbox-2.0.27
-
       - name: Tests Petclinic
         uses: actions/cache@v3
         with:
