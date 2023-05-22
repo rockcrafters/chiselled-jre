@@ -35,14 +35,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      - name: Tests Petclinic
-        uses: actions/cache@v3
-        with:
-          path: tests/petclinic-test/spring-petclinic
-          key: tests-petclinic-test-spring-petclinic
-          restore-keys: |
-            tests-petclinic-test-spring-petclinic
-
       - name: Tests PDFBox
         uses: actions/cache@v3
         with:
@@ -50,6 +42,14 @@ jobs:
           key: tests-pdfbox-test-pdbbox
           restore-keys: |
             tests-pdfbox-test-pdbbox
+
+      - name: Tests Petclinic
+        uses: actions/cache@v3
+        with:
+          path: tests/petclinic-test/spring-petclinic
+          key: tests-petclinic-test-spring-petclinic
+          restore-keys: |
+            tests-petclinic-test-spring-petclinic
 
       - name: Build the chiselled-jre image
         run: |
