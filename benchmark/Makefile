@@ -5,8 +5,8 @@ SHELL=/bin/bash
 TEMURIN_TAG=17-jre-jammy
 IMAGE_TEMURIN=eclipse-temurin:$(TEMURIN_TAG)
 IMAGE_UBUNTU=azul/zulu-openjdk:17.0.7-17.42.19-jre-headless
-IMAGE_ALPINE=amazoncorretto:17.0.7-al2023-headless \
-	azul/zulu-openjdk-alpine:17.0.7-17.42.19-jre-headless
+IMAGE_AL2023=amazoncorretto:17.0.7-al2023-headless
+IMAGE_ALPINE=azul/zulu-openjdk-alpine:17.0.7-17.42.19-jre-headless
 IMAGES=$(IMAGE_TEMURIN) $(IMAGE_UBUNTU) $(IMAGE_ALPNE)
 
 PROJECT=acmeair-monolithic-java
@@ -36,6 +36,9 @@ acmeair-tomcat:
 	done
 	for x in $(IMAGE_ALPINE); do \ 
 		docker build -t tomcat-$$x --build-arg BASE_IMAGE=$$x acmeair-tomcat -f Dockerfile.alpine || exit 1;\
+	done
+	for x in $(IMAGE_AL2023); do \ 
+		docker build -t tomcat-$$x --build-arg BASE_IMAGE=$$x acmeair-tomcat -f Dockerfile.al2023 || exit 1;\
 	done
 
 
