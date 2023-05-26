@@ -1,0 +1,5 @@
+ARG BASE_IMAGE
+FROM $BASE_IMAGE
+
+ADD config/server.xml /usr/local/tomcat/conf/server.xml
+ADD acmeair-java-2.0.0-SNAPSHOT.war /usr/local/tomcat/webapps

@@ -30,5 +30,13 @@ acmeair-standalone: maven
 	done
 	
 acmeair-tomcat:
+	docker build -t tomcat-temurin --build-arg BASE_IMAGE=tomcat:$(TEMURIN_TAG) acmeair-tomcat -f Dockerfile.temurin
+	for x in $(IMAGE_UBUNTU); do \ 
+		docker build -t tomcat-$$x --build-arg BASE_IMAGE=$$x acmeair-tomcat -f Dockerfile.ubuntu || exit 1;\
+	done
+	for x in $(IMAGE_ALPINE); do \ 
+		docker build -t tomcat-$$x --build-arg BASE_IMAGE=$$x acmeair-tomcat -f Dockerfile.alpine || exit 1;\
+	done
+
 
 .PHONY=acmeair-standalone acmeair-tomcat
