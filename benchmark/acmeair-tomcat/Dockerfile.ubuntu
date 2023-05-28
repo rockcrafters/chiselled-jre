@@ -1,37 +1,79 @@
+ARG UBUNTU_RELEASE=22.04
 ARG BASE_IMAGE=ubuntu/chiselled-jre:17_edge
-ARG TOMCAT_IMAGE=acmeair-tomcat
-# Use x86_64 for amd64 and aarch64 for arm64
-ARG ARCH=x86_64
-FROM $TOMCAT_IMAGE as builder
+FROM golang:1.18 AS chisel
+ARG UBUNTU_RELEASE
+RUN git clone -b jre17-jammy-depenencies https://github.com/vpa1977/chisel-releases /opt/chisel-releases \
+    && git clone --depth 1 -b main https://github.com/canonical/chisel /opt/chisel
+WORKDIR /opt/chisel
+RUN go generate internal/deb/version.go \
+    && go build ./cmd/chisel
+
+FROM public.ecr.aws/ubuntu/ubuntu:$UBUNTU_RELEASE@sha256:5f6d7e4dad348dbbae3c1e960dcaba98c2e262902c67c9bc41d5f2417cebaeb8 AS builder
+SHELL ["/bin/bash", "-oeux", "pipefail", "-c"]
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y ca-certificates \
+        ca-certificates-java \
+        binutils \
+        openjdk-17-jdk \
+        libapr1 \
+        openssl \
+        libssl3 \
+        gcc \
+        make \
+        libapr1-dev \
+        libssl-dev \
+        curl \
+        busybox \
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/*
+COPY --from=chisel /opt/chisel/chisel /usr/bin/
+
+ENV CATALINA_HOME /usr/local/tomcat
+ENV PATH $CATALINA_HOME/bin:$PATH
+RUN mkdir -p "$CATALINA_HOME"
+WORKDIR $CATALINA_HOME
+ENV TOMCAT_NATIVE_LIBDIR $CATALINA_HOME/native-jni-lib
+ENV LD_LIBRARY_PATH ${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$TOMCAT_NATIVE_LIBDIR
+ENV JAVA_HOME /usr/lib/jvm/java-17-openjdk-amd64
+ADD build-tomcat.sh /
+RUN /build-tomcat.sh
+RUN rm /build-tomcat.sh
+
+FROM builder as sliced-deps
+
+COPY --from=chisel /opt/chisel-releases /opt/chisel-releases
+RUN mkdir -p /rootfs \
+    && chisel cut --release /opt/chisel-releases --root /rootfs \
+        openssl_bins \
+        libapr1_libs \
+        busybox_bins
+
+# configure busybox applets
+RUN for applet in $(busybox --list); do \
+      ln -s /bin/busybox /rootfs/bin/$applet ; \
+    done 
+
 FROM $BASE_IMAGE
-ARG ARCH
-ENV ARCH=${ARCH}
-
-COPY --chown=$UID:$GID --from=builder \
-    /usr/local/tomcat /usr/local/tomcat
-
-#  launcher support
-COPY --from=builder /bin/sh /bin/sh
-COPY --from=builder /usr/bin/chmod /usr/bin/chmod
-COPY --from=builder /usr/bin/uname /usr/bin/uname
-COPY --from=builder /usr/bin/dirname /usr/bin/dirname
-
-# tomcat native support
-#(openssl)
-COPY --from=builder /usr/lib/${ARCH}-linux-gnu/engines-3/*.so /usr/lib/${ARCH}-linux-gnu/engines-3/
-COPY --from=builder /usr/lib/${ARCH}-linux-gnu/libcrypto.so.3 /usr/lib/${ARCH}-linux-gnu/libcrypto.so.3
-COPY --from=builder /usr/lib/${ARCH}-linux-gnu/libssl.so.3 /usr/lib/${ARCH}-linux-gnu/libssl.so.3
-COPY --from=builder /usr/lib/${ARCH}-linux-gnu/ossl-modules/* /usr/lib/${ARCH}-linux-gnu/ossl-modules/
-# libapr
-COPY --from=builder /usr/lib/${ARCH}-linux-gnu/libapr-1.so.0 /usr/lib/${ARCH}-linux-gnu/libapr-1.so.0
-COPY --from=builder  /usr/lib/${ARCH}-linux-gnu/libuuid.so.1 /usr/lib/${ARCH}-linux-gnu/libuuid.so.1
-
-ENV CATALINA_HOME=/usr/local/tomcat
-ENV PATH=$CATALINA_HOME/bin:$PATH
+ENV CATALINA_HOME /usr/local/tomcat
+ENV PATH $CATALINA_HOME/bin:$PATH
 WORKDIR $CATALINA_HOME
 
-ENV TOMCAT_NATIVE_LIBDIR=$CATALINA_HOME/native-jni-lib
-ENV LD_LIBRARY_PATH=${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$TOMCAT_NATIVE_LIBDIR
+# let "Tomcat Native" live somewhere isolated
+ENV TOMCAT_NATIVE_LIBDIR $CATALINA_HOME/native-jni-lib
+ENV LD_LIBRARY_PATH ${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$TOMCAT_NATIVE_LIBDIR
+COPY --from=sliced-deps /rootfs /
+COPY --from=builder /usr/local/tomcat /usr/local/tomcat
 
-ENTRYPOINT [ "/bin/sh" ]
-CMD [ "/usr/local/tomcat/bin/catalina.sh", "run" ]
+# verify Tomcat Native is working properly
+RUN set -eux; \
+    nativeLines="$(catalina.sh configtest 2>&1)"; \
+    if ! echo "$nativeLines" | grep 'Loaded Apache Tomcat Native library' >&2; then \
+        echo >&2 "$nativeLines"; \
+        exit 1; \
+    fi
+
+EXPOSE 8080
+
+ENTRYPOINT ["/bin/sh"]
+
+CMD ["catalina.sh", "run"]
