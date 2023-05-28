@@ -42,7 +42,8 @@ jdk.internal.vm.compiler,jdk.internal.vm.compiler.management,\
 jdk.jdwp.agent \
     --output /opt/java
 
-RUN cd /opt/java && tar zcvf legal.tar.gz legal && rm -r legal
+WORKDIR /opt/java
+RUN tar zcvf legal.tar.gz legal && rm -r legal
 
 FROM builder AS sliced-deps
 ARG USER
