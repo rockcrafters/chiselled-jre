@@ -23,6 +23,8 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 COPY --from=chisel /opt/chisel/chisel /usr/bin/
 
+### BOILERPLATE END ###
+
 RUN jlink --no-header-files --no-man-pages --strip-debug \
     --add-modules \
 java.base,java.datatransfer,java.desktop,java.instrument,\
@@ -40,7 +42,7 @@ jdk.internal.vm.compiler,jdk.internal.vm.compiler.management,\
 jdk.jdwp.agent \
     --output /opt/java
 
-### BOILERPLATE END ###
+RUN cd /opt/java && tar zcvf legal.tar.gz legal && rm -r legal
 
 FROM builder AS sliced-deps
 ARG USER
