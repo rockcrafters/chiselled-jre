@@ -16,8 +16,8 @@ if [ -z $M2_CACHE ]; then
     exit 1
 fi
 
-VERSION=3.0.0-alpha3-patch
-
+PDFBOX_REPO=https://github.com/vpa1977/pdfbox
+VERSION=3.0.0-alpha3
 APP=pdfbox
 TEST_DIR=`pwd`
 
@@ -30,9 +30,10 @@ DOCKER_OPTS="--rm  \
     -v ${TEST_DIR}:${TEST_DIR} \
     -w ${TEST_DIR}/${APP} "
 
-if [ ! -d ${APP} ]; then
-    git clone -b ${VERSION} https://github.com/vpa1977/pdfbox
-fi
+git clone --branch ${VERSION} ${PDFBOX_REPO} || \
+    (cd ${APP} && \
+     git checkout ${VERSION} &&
+     git reset --hard)
 
 # build and tests with chiselled jre
 docker run \

@@ -7,9 +7,9 @@ ARG UID=101
 ARG GROUP=app
 ARG GID=101
 
-FROM eclipse-temurin:8u362-b09-jdk-jammy as builder
+FROM eclipse-temurin:17-jdk-jammy as builder
 
-ENV PETCLINIC_TAG=${PETCLINIC_TAG:-spring-boot-2.7.3}
+ENV PETCLINIC_TAG=${PETCLINIC_TAG:-spring-boot-3.0.6}
 ENV PETCLINIC_REPO=${PETCLINIC_REPO:-https://github.com/vpa1977/spring-petclinic}
 
 RUN apt-get update \
@@ -28,10 +28,10 @@ USER $UID:$GID
 
 # copy petclinic sample
 COPY --chown=$UID:$GID --from=builder \
-    /spring-petclinic/target/spring-petclinic-2.7.3.jar /
+    /spring-petclinic/target/spring-petclinic-3.0.6.jar /
 
 WORKDIR /
 
-ENTRYPOINT ["/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java", \
+ENTRYPOINT ["/opt/java/bin/java", \
     "-jar", \
-    "spring-petclinic-2.7.3.jar" ]
+    "spring-petclinic-3.0.6.jar" ]
