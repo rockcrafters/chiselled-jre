@@ -53,6 +53,9 @@ RUN for applet in $(busybox --list); do \
       ln -s /bin/busybox /rootfs/bin/$applet ; \
     done 
 
+RUN mkdir -p /rootfs/usr/local/tomcat \
+    && cp -rp /usr/local/tomcat/* /rootfs/usr/local/tomcat/
+
 FROM $BASE_IMAGE
 ENV CATALINA_HOME /usr/local/tomcat
 ENV PATH $CATALINA_HOME/bin:$PATH
@@ -62,7 +65,7 @@ WORKDIR $CATALINA_HOME
 ENV TOMCAT_NATIVE_LIBDIR $CATALINA_HOME/native-jni-lib
 ENV LD_LIBRARY_PATH ${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$TOMCAT_NATIVE_LIBDIR
 COPY --from=sliced-deps /rootfs /
-COPY --from=builder /usr/local/tomcat /usr/local/tomcat
+
 
 # verify Tomcat Native is working properly
 RUN set -eux; \
