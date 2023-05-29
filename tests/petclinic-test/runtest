@@ -18,7 +18,7 @@ fi
 
 # clone petclinic repository, alternative is to have a submodule here
 TEST_DIR=`pwd`
-APP=spring-petclinic
+PROJECT=spring-petclinic
 
 PETCLINIC_TAG=spring-boot-3.0.6
 PETCLINIC_REPO=https://github.com/vpa1977/${PROJECT}
@@ -34,7 +34,7 @@ DOCKER_OPTS="--rm  \
     -u app \
     -v ${M2_CACHE}:${M2_CACHE} \
     -v ${TEST_DIR}:${TEST_DIR} \
-    -w ${TEST_DIR}/${APP} "
+    -w ${TEST_DIR}/${PROJECT} "
 
 # now run the tests within our container
 docker run \
