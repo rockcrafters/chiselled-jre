@@ -9,7 +9,7 @@ IMAGE_AL2023=amazoncorretto:17.0.7-al2023-headless
 IMAGES=$(IMAGE_TEMURIN) $(IMAGE_UBUNTU) $(IMAGE_ALPNE)
 
 PROJECT=acmeair-monolithic-java
-TAG=chiselled-demo
+TAG=chiselled-demo-17
 ACMEAIR_REPO=https://github.com/vpa1977/$(PROJECT)
 
 .PHONY=standalone tomcat
