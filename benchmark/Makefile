@@ -2,7 +2,7 @@
 
 SHELL=/bin/bash
 
-IMAGE_TEMURIN=eclipse-temurin:17-jre-jammy
+IMAGE_TEMURIN=eclipse-temurin:17.0.7_7-jre-jammy
 IMAGE_DISTROLESS=ubuntu/chiselled-jre:17_edge azul/zulu-openjdk-distroless:17.0.7-17.42.19 gcr.io/distroless/java17-debian11
 IMAGE_YUM=amazoncorretto:17.0.7-al2023-headless eclipse-temurin:17.0.7_7-jre-alpine
 STANDALONE_IMAGES=$(IMAGE_TEMURIN) $(IMAGE_DISTROLESS) $(IMAGE_YUM)
@@ -27,7 +27,7 @@ standalone: maven
 	for x in $(STANDALONE_IMAGES); do \
 	    docker build -t standalone-$$x --build-arg BASE_IMAGE=$$x acmeair-standalone || exit 1;\
 	done
-	
+
 tomcat: maven
 	docker build -t tomcat-temurin \
 		--build-arg BASE_IMAGE=tomcat:10.1.9-jre17-temurin-jammy \
