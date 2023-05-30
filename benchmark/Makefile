@@ -4,7 +4,7 @@
 SHELL=/bin/bash
 
 IMAGE_TEMURIN=eclipse-temurin:17-jre-jammy
-IMAGE_UBUNTU=ubuntu/chiselled-jre:17_edge azul/zulu-openjdk-distroless:17.0.7-17.42.19
+IMAGE_UBUNTU=ubuntu/chiselled-jre:17_edge azul/zulu-openjdk-distroless:17.0.7-17.42.19 gcr.io/distroless/java17-debian11
 IMAGE_AL2023=amazoncorretto:17.0.7-al2023-headless
 IMAGES=$(IMAGE_TEMURIN) $(IMAGE_UBUNTU) $(IMAGE_ALPNE)
 
