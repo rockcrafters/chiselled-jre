@@ -1,3 +1,4 @@
+ARG MAVEN_IMAGE
 ARG UBUNTU_RELEASE=22.04
 ARG USER=app
 ARG UID=101
@@ -32,30 +33,7 @@ SHELL ["/bin/bash", "-oeux", "pipefail", "-c"]
 COPY --from=chisel /opt/chisel-releases /opt/chisel-releases
 RUN mkdir -p /rootfs \
       && chisel cut --release /opt/chisel-releases --root /rootfs \
-        openjdk-8-jre-headless_core \
-        openjdk-8-jre-headless_locale \
-        openjdk-8-jre-headless_security \
-        openjdk-8-jre-headless_management \
-        openjdk-8-jre-headless_jfr \
-        openjdk-8-jre-headless_tools \
-        openjdk-8-jre-headless_jplis \
-        openjdk-8-jre-headless_jndidns \
-        openjdk-8-jre-headless_zipfs \
-        openjdk-8-jre-headless_sctp \
-        media-types_data \
-        base-files_bin \
-    && ln -s "$(find /rootfs/usr/lib/jvm/java-8-openjdk-*/jre/bin -name java | sed 's/\/rootfs//')" /rootfs/usr/bin/
-RUN install -d -m 0755 -o $UID -g $GID /rootfs/home/$USER \
-    && echo -e "root:x:0:\n$GROUP:x:$GID:" >/rootfs/etc/group \
-    && echo -e "root:x:0:0:root:/root:/noshell\n$USER:x:$UID:$GID::/home/$USER:/noshell" >/rootfs/etc/passwd
-COPY --from=builder /etc/ssl/certs/java/cacerts /rootfs/etc/ssl/certs/java/cacerts
+        openjdk-8-jre-headless_awt
 
-FROM scratch
-ARG USER
-ARG UID
-ARG GID
-USER $UID:$GID
+FROM $MAVEN_IMAGE
 COPY --from=sliced-deps /rootfs /
-# Workaround for https://github.com/moby/moby/issues/38710
-COPY --from=sliced-deps --chown=$UID:$GID /rootfs/home/$USER /home/$USER
-ENTRYPOINT ["/usr/bin/java"]

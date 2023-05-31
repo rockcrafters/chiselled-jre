@@ -45,7 +45,7 @@ Oracle does not provide an official image of the Java Runtime Environment 8 and 
 |-----|---|----| ----------------------------| -------------|
 | eclipse-temurin|8u362-b09-jre-jammy|215MB|80M| 100% |
 | amazoncorretto| 8u362-alpine3.14-jre| 109M | 43M| 53.8% |
-| ubuntu/chiselled-jre|8-22.04_edge| 113MB |44M | 55% |
+| ubuntu/chiselled-jre|8-22.04_edge| 100MB |38M | 47.5% |
 
 ### ARM64
 
@@ -53,8 +53,10 @@ Oracle does not provide an official image of the Java Runtime Environment 8 and 
 |-----|---|----| ----------------------------| -------------|
 | eclipse-temurin|8u362-b09-jre-jammy|205MB|77M| 100% |
 | amazoncorretto| 8u362-alpine3.14-jre| n/a | n/a| n/a |
-| ubuntu/chiselled-jre|8-22.04_edge| 109MB |42M | 55% |
+| ubuntu/chiselled-jre|8-22.04_edge| 97MB |37M | 48% |
 
+The chiselled image removes Abstract Window Toolkit native libraries along with accessibility support, profiling and debugging agents. Only 'java' executable is left in `jre/bin`.
+Note: chiselled images, at the moment, do not provide classes.jsa (Class Data Cache) in line with Temurin JRE.
 
 The points of difference with the Temurin image are:
 - `/bin` and `/usr/bin` are removed, which occupy 20MB (compressed) in Temurin
@@ -65,11 +67,8 @@ The points of difference with the Temurin image are:
 
 The points of difference with the Amazon Corretto image are:
  - Corretto deploys busybox as a shell
- - Corretto does not have fontconfig/fonts libraries. This causes `java.awt.Font.createFont()` to fail with `java.lang.UnsatisfiedLinkError`. Removing font support will bring the chiselled JRE size on par with the Corretto image.
+ - Corretto does not have fontconfig/fonts libraries, but contains headless Abstract Window Toolkit. This causes `java.awt.Font.createFont()` to fail with `java.lang.UnsatisfiedLinkError`, making Abstract Window Toolkit APIs partially available.
  - No JRE is provided for ARM64, there is only JDK build
-
-The JRE differences themselves are minimal. The chiselled image removes `libawt_xawt.so` and `libsplashscren.so` along with accessibility support. Only 'java' executable is left in `jre/bin`.
-Note: chiselled images, at the moment, do not provide classes.jsa (Class Data Cache) in line with Temurin JRE.
 
 Below are image sizes of the deployed `acmeair` benchmark application
 
@@ -79,14 +78,14 @@ Below are image sizes of the deployed `acmeair` benchmark application
 |Base Image|Uncompressed Size| Compressed Size| % Compressed |
 |---|----| ----------------------------|----|
 | eclipse-temurin:8u362-b08-jre-jammy | 237MB | 99MB |  100% |
-| ubuntu/chiselled-jre:8_edge | 135MB | 63MB| 64% |
+| ubuntu/chiselled-jre:8_edge | 122MB | 57MB| 57% |
 | amazoncorretto:8u362-alpine3.14-jre | 131MB | 62MB| 63% |
 
 ### ARM64
 |Base Image|Uncompressed Size| Compressed Size| % Compressed |
 |---|----| ----------------------------|----|
 | eclipse-temurin:8u362-b08-jre-jammy | 227MB | 96MB |  100% |
-| ubuntu/chiselled-jre:8_edge | 131MB | 62MB| 65% |
+| ubuntu/chiselled-jre:8_edge | 119MB | 57MB| 59% |
 
 
 ### Test Environment
@@ -239,7 +238,7 @@ The data shows no statistical difference for the standalone Spring Application b
 
 ### Conclusion
 
-The chiselled JRE image of OpenJDK 8 provides a 45% reduction in the size of the compressed image compared to Temurin and 1.2% larger than the Amazon Corretto image.
+The chiselled JRE image of OpenJDK 8 provides a 52% reduction in the size of the compressed image compared to Temurin and 1% smaller than the Amazon Corretto image.
 The chiselled JRE image does not degrade throughput or startup performance compared to the evaluated images.
 
 ## License

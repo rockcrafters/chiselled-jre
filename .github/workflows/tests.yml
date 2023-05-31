@@ -38,10 +38,10 @@ jobs:
       - name: Tests PDFBox
         uses: actions/cache@v3
         with:
-          path: tests/pdfbox/pdfbox-2.0.27
-          key: tests-pdfbox-pdfbox-2.0.27
+          path: tests/pdfbox/pdfbox
+          key: tests-pdfbox-test-pdbbox
           restore-keys: |
-            tests-pdfbox-pdfbox-2.0.27
+            tests-pdfbox-test-pdbbox
 
       - name: Tests Petclinic
         uses: actions/cache@v3
