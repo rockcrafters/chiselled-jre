@@ -48,7 +48,7 @@ yum:
 alpine:
 	for x in $(IMAGE_ALPINE); do \
 		docker build -t tomcat-$$x --build-arg BASE_IMAGE=$$x acmeair-tomcat \
-			-f acmeair-tomcat/Dockerfile.alpine || exit 1;\
+			-f acmeair-tomcat/Dockerfile.yum || exit 1;\
 	done
 
 
