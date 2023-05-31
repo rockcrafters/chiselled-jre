@@ -1,4 +1,6 @@
-FROM fedora as builder 
+ARG BASE_IMAGE
+
+FROM fedora as builder
 
 ENV CATALINA_HOME /usr/local/tomcat
 ENV PATH $CATALINA_HOME/bin:$PATH
@@ -11,7 +13,7 @@ RUN yum install -y gzip tar \
             apr-devel \
             gcc \
             make \
-            openssl-devel \ 
+            openssl-devel \
             java-17-openjdk-devel \
             redhat-rpm-config
 
@@ -19,7 +21,7 @@ ADD build-tomcat.sh /
 RUN /build-tomcat.sh
 RUN rm /build-tomcat.sh
 
-FROM amazoncorretto:17.0.7-al2023
+FROM $BASE_IMAGE
 
 RUN yum install -y --setopt=skip_missing_names_on_install=False openssl apr
 
