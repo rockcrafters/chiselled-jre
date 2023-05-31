@@ -4,7 +4,8 @@ SHELL=/bin/bash
 
 IMAGE_TEMURIN=eclipse-temurin:17.0.7_7-jre-jammy
 IMAGE_DISTROLESS=ubuntu/chiselled-jre:17_edge azul/zulu-openjdk-distroless:17.0.7-17.42.19 gcr.io/distroless/java17-debian11
-IMAGE_YUM=amazoncorretto:17.0.7-al2023-headless eclipse-temurin:17.0.7_7-jre-alpine
+IMAGE_YUM=amazoncorretto:17.0.7-al2023-headless
+IMAGE_ALPINE=eclipse-temurin:17.0.7_7-jre-alpine
 STANDALONE_IMAGES=$(IMAGE_TEMURIN) $(IMAGE_DISTROLESS) $(IMAGE_YUM)
 
 PROJECT=acmeair-monolithic-java
@@ -39,6 +40,10 @@ tomcat: maven
 	for x in $(IMAGE_YUM); do \
 		docker build -t tomcat-$$x --build-arg BASE_IMAGE=$$x acmeair-tomcat \
 			-f acmeair-tomcat/Dockerfile.yum || exit 1;\
+	done
+	for x in $(IMAGE_ALPINE); do \
+		docker build -t tomcat-$$x --build-arg BASE_IMAGE=$$x acmeair-tomcat \
+			-f acmeair-tomcat/Dockerfile.alpine || exit 1;\
 	done
 
 
