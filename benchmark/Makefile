@@ -29,18 +29,23 @@ standalone: maven
 	    docker build -t standalone-$$x --build-arg BASE_IMAGE=$$x acmeair-standalone || exit 1;\
 	done
 
-tomcat: maven
+tomcat: maven temurin distroless yum alpine
+
+temurin:
 	docker build -t tomcat-temurin \
 		--build-arg BASE_IMAGE=tomcat:10.1.9-jre17-temurin-jammy \
-		acmeair-tomcat -f acmeair-tomcat/Dockerfile.temurin || exit 1
+		acmeair-tomcat -f acmeair-tomcat/Dockerfile.temurin || exit 1a
+distroless:
 	for x in $(IMAGE_DISTROLESS); do \
 		docker build -t tomcat-$$x --build-arg BASE_IMAGE=$$x acmeair-tomcat \
 			-f acmeair-tomcat/Dockerfile.distroless || exit 1;\
 	done
+yum:
 	for x in $(IMAGE_YUM); do \
 		docker build -t tomcat-$$x --build-arg BASE_IMAGE=$$x acmeair-tomcat \
 			-f acmeair-tomcat/Dockerfile.yum || exit 1;\
 	done
+alpine:
 	for x in $(IMAGE_ALPINE); do \
 		docker build -t tomcat-$$x --build-arg BASE_IMAGE=$$x acmeair-tomcat \
 			-f acmeair-tomcat/Dockerfile.alpine || exit 1;\
