@@ -76,4 +76,6 @@ COPY --from=sliced-deps /rootfs /
 # Workaround for https://github.com/moby/moby/issues/38710
 COPY --from=sliced-deps --chown=$UID:$GID /rootfs/home/$USER /home/$USER
 ENV JAVA_HOME /opt/java/
+ENV PATH $PATH:/opt/java/bin
+
 ENTRYPOINT ["/opt/java/bin/java"]
