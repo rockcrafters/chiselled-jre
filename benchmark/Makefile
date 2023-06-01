@@ -6,7 +6,7 @@ IMAGE_TEMURIN=eclipse-temurin:17.0.7_7-jre-jammy
 IMAGE_DISTROLESS=ubuntu/chiselled-jre:17_edge azul/zulu-openjdk-distroless:17.0.7-17.42.19 gcr.io/distroless/java17-debian11
 IMAGE_YUM=amazoncorretto:17.0.7-al2023-headless
 IMAGE_ALPINE=eclipse-temurin:17.0.7_7-jre-alpine
-STANDALONE_IMAGES=$(IMAGE_TEMURIN) $(IMAGE_DISTROLESS) $(IMAGE_YUM)
+STANDALONE_IMAGES=$(IMAGE_TEMURIN) $(IMAGE_DISTROLESS) $(IMAGE_YUM) $(IMAGE_ALPINE)
 
 PROJECT=acmeair-monolithic-java
 TAG=chiselled-demo-17
@@ -34,7 +34,7 @@ tomcat: maven temurin distroless yum alpine
 temurin:
 	docker build -t tomcat-temurin \
 		--build-arg BASE_IMAGE=tomcat:10.1.9-jre17-temurin-jammy \
-		acmeair-tomcat -f acmeair-tomcat/Dockerfile.temurin || exit 1a
+		acmeair-tomcat -f acmeair-tomcat/Dockerfile.temurin || exit 1
 distroless:
 	for x in $(IMAGE_DISTROLESS); do \
 		docker build -t tomcat-$$x --build-arg BASE_IMAGE=$$x acmeair-tomcat \
@@ -51,4 +51,16 @@ alpine:
 			-f acmeair-tomcat/Dockerfile.yum || exit 1;\
 	done
 
+export-tomcat: tomcat
+	for x in temurin $(IMAGE_DISTROLESS) $(IMAGE_YUM) $(IMAGE_ALPINE); do \
+		name=$$(echo tomcat-$$x | sed 's/\//_/g'); \
+		docker image save tomcat-$$x -o $$name ; gzip -f $$name; \
+	done
 
+export-standalone: standalone
+	for x in $(STANDALONE_IMAGES); do \
+		name=$$(echo standalone-$$x | sed 's/\//_/g' ); \
+		docker image save standalone-$$x -o $$name ;  gzip -f $$name; \
+	done
+
+export: export-tomcat export-standalone
