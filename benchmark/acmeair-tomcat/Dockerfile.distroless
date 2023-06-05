@@ -77,7 +77,9 @@ RUN set -eux; \
 
 EXPOSE 8080
 
-ENTRYPOINT ["/bin/sh"]
+# add acmeair application
+ADD config/server.xml /usr/local/tomcat/conf/server.xml
+ADD acmeair-java-2.0.0-SNAPSHOT.war /usr/local/tomcat/webapps
 
 ENTRYPOINT ["/bin/busybox", "sh"]
 CMD ["/usr/local/tomcat/bin/catalina.sh", "run"]
