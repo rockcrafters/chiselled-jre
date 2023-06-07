@@ -54,13 +54,13 @@ alpine:
 export-tomcat: tomcat
 	for x in temurin $(IMAGE_DISTROLESS) $(IMAGE_YUM) $(IMAGE_ALPINE); do \
 		name=$$(echo tomcat-$$x | sed 's/\//_/g'); \
-		docker image save tomcat-$$x -o $$name ; gzip -f $$name; \
+		docker image save tomcat-$$x -o $${name}.tar ; gzip -f $${name}.tar; \
 	done
 
 export-standalone: standalone
 	for x in $(STANDALONE_IMAGES); do \
 		name=$$(echo standalone-$$x | sed 's/\//_/g' ); \
-		docker image save standalone-$$x -o $$name ;  gzip -f $$name; \
+		docker image save standalone-$$x -o $${name}.tar ;  gzip -f $${name}.tar ; \
 	done
 
 export: export-tomcat export-standalone
