@@ -1,13 +1,13 @@
 #!/bin/bash
-set -ex 
-
+set -ex
+JAVA_HOME=$(find /usr/lib/jvm -name *.h -print -quit | xargs dirname | xargs dirname)
 TOMCAT_MAJOR=10
 TOMCAT_VERSION=10.1.9
 TOMCAT_SHA512=cfdc182e62b33b98ce61f084f51c9cf0bcc5e5f4fff341d6e8bcb7c54b12c058faa2e164a587100ba1c6172b9ae2b32ff4a7193a859b368d1f67baca6aa1680f
 
 curl -fL -o 'tomcat.tar.gz' "https://www.apache.org/dyn/closer.cgi?action=download&filename=tomcat/tomcat-$TOMCAT_MAJOR/v$TOMCAT_VERSION/bin/apache-tomcat-$TOMCAT_VERSION.tar.gz"
 echo "$TOMCAT_SHA512 *tomcat.tar.gz" | sha512sum --strict --check -
-tar -xf tomcat.tar.gz --strip-components=1 
+tar -xf tomcat.tar.gz --strip-components=1
 rm bin/*.bat
 rm tomcat.tar.gz*
 
@@ -33,7 +33,7 @@ make CFLAGS=-DOPENSSL_SUPPRESS_DEPRECATED -j "$(nproc)"
 make install
 cd $CATALINA_HOME
 rm -rf "$nativeBuildDir"
-rm bin/tomcat-native.tar.gz; 
+rm bin/tomcat-native.tar.gz;
 
 chmod -R +rX .
 chmod 1777 logs temp work

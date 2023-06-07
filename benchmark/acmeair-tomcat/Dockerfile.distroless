@@ -34,7 +34,6 @@ RUN mkdir -p "$CATALINA_HOME"
 WORKDIR $CATALINA_HOME
 ENV TOMCAT_NATIVE_LIBDIR $CATALINA_HOME/native-jni-lib
 ENV LD_LIBRARY_PATH ${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$TOMCAT_NATIVE_LIBDIR
-ENV JAVA_HOME /usr/lib/jvm/java-17-openjdk-amd64
 ADD build-tomcat.sh /
 RUN /build-tomcat.sh
 RUN rm /build-tomcat.sh
