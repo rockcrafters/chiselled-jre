@@ -17,7 +17,7 @@ fi
 
 TEST_DIR=`pwd`
 PROJECT=acmeair-monolithic-java
-TAG=chiselled-test
+TAG=chiselled-test-mongo
 ACMEAIR_REPO=https://github.com/vpa1977/${PROJECT}
 
 DOCKER_OPTS="--rm  \
