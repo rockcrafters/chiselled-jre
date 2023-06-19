@@ -57,8 +57,8 @@ jobs:
           -t ${{ env.image-name }} \
           --build-arg UID=$(id -u ${USER}) \
           --build-arg GID=$(id -g ${USER}) \
-          -f chiselled-jre/Dockerfile.${{ matrix.ubuntu-release }} \
-          chiselled-jre
+          -f jre/Dockerfile.${{ matrix.ubuntu-release }} \
+          jre
 
       - name: Build the JDK docker image
         run: |
@@ -109,13 +109,13 @@ jobs:
       - name: Lint the Dockerfile
         uses: hadolint/hadolint-action@v3.1.0
         with:
-          dockerfile: chiselled-jre/Dockerfile.${{ matrix.ubuntu-release }}
+          dockerfile: jre/Dockerfile.${{ matrix.ubuntu-release }}
           ignore: DL3008,DL3015,SC3028
 
       - name: Build the jre image
         run: |
           docker buildx build \
           --tag=${{ env.image-name }} \
-          --file=chiselled-jre/Dockerfile.${{ matrix.ubuntu-release }} \
+          --file=jre/Dockerfile.${{ matrix.ubuntu-release }} \
           --platform=linux/${{ matrix.arch }} \
-          chiselled-jre
+          jre
