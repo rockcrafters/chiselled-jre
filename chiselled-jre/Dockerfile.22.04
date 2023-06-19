@@ -53,14 +53,8 @@ SHELL ["/bin/bash", "-oeux", "pipefail", "-c"]
 COPY --from=chisel /opt/chisel-releases /opt/chisel-releases
 RUN mkdir -p /rootfs \
     && chisel cut --release /opt/chisel-releases --root /rootfs \
-        media-types_data \
-        libjpeg-turbo8_libs \
-        liblcms2-2_libs \
-        libfontconfig1_libs \
         libc6_libs \
-        libfreetype6_libs \
         libgcc-s1_libs \
-        libpcsclite1_libs \
         libstdc++6_libs \
         zlib1g_libs \
         libgraphite2-3_libs \
