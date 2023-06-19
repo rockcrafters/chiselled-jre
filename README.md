@@ -1,6 +1,6 @@
-# Chiselled JRE
+# Ubuntu JRE
 
-The different releases of this chiselled Ubuntu image are maintained via
+The different releases of this Ubuntu JRE image are maintained via
 channel branches (e.g. `channels/8/edge`).
 
 Read more about the repository structure and build automation [here](<https://github.com/ubuntu-rocks/.github/blob/main/profile/README.md#-joining-the-ubuntu-rocks-project>).
@@ -27,7 +27,7 @@ The differences in vendor distribution could be attributed to the audience provi
 
 The cloud vendors traditionally offered `amd64`-based virtual machines, though recently they have started to provide `arm64` offerings, such as [Amazon Graviton](https://aws.amazon.com/ec2/graviton/). This image evaluation will focus on `amd64` and `arm64` platforms.
 
-The chiselled JRE container is built based on the Ubuntu 22.04 version of Java 8 runtime - `8u362-ga`.
+The Ubuntu JRE container is built based on the Ubuntu 22.04 version of Java 8 runtime - `8u362-ga`.
 
 This section provides a comparison with readily-available JRE 8 images from the most popular distributions:
  - Eclipse Adoptium: [`eclipse-temurin:8u362-b09-jre-jammy`](https://hub.docker.com/_/eclipse-temurin), [Dockerfile](https://github.com/adoptium/containers/blob/faa5fb7621fd9b0672b83f398d3c6ee579534015/8/jre/ubuntu/jammy/Dockerfile.releases.full)
@@ -45,7 +45,7 @@ Oracle does not provide an official image of the Java Runtime Environment 8 and 
 |-----|---|----| ----------------------------| -------------|
 | eclipse-temurin|8u362-b09-jre-jammy|215MB|80M| 100% |
 | amazoncorretto| 8u362-alpine3.14-jre| 109M | 43M| 53.8% |
-| ubuntu/chiselled-jre|8-22.04_edge| 100MB |38M | 47.5% |
+| ubuntu/jre|8-22.04_edge| 100MB |38M | 47.5% |
 
 ### ARM64
 
@@ -53,10 +53,10 @@ Oracle does not provide an official image of the Java Runtime Environment 8 and 
 |-----|---|----| ----------------------------| -------------|
 | eclipse-temurin|8u362-b09-jre-jammy|205MB|77M| 100% |
 | amazoncorretto| 8u362-alpine3.14-jre| n/a | n/a| n/a |
-| ubuntu/chiselled-jre|8-22.04_edge| 97MB |37M | 48% |
+| ubuntu/jre|8-22.04_edge| 97MB |37M | 48% |
 
-The chiselled image removes Abstract Window Toolkit native libraries along with accessibility support, profiling and debugging agents. Only 'java' executable is left in `jre/bin`.
-Note: chiselled images, at the moment, do not provide classes.jsa (Class Data Cache) in line with Temurin JRE.
+The Ubuntu JRE image removes Abstract Window Toolkit native libraries along with accessibility support, profiling and debugging agents. Only 'java' executable is left in `jre/bin`.
+Note: Ubuntu JRE images, at the moment, do not provide classes.jsa (Class Data Cache) in line with Temurin JRE.
 
 The points of difference with the Temurin image are:
 - `/bin` and `/usr/bin` are removed, which occupy 20MB (compressed) in Temurin
@@ -78,14 +78,14 @@ Below are image sizes of the deployed `acmeair` benchmark application
 |Base Image|Uncompressed Size| Compressed Size| % Compressed |
 |---|----| ----------------------------|----|
 | eclipse-temurin:8u362-b08-jre-jammy | 237MB | 99MB |  100% |
-| ubuntu/chiselled-jre:8_edge | 122MB | 57MB| 57% |
+| ubuntu/jre:8_edge | 122MB | 57MB| 57% |
 | amazoncorretto:8u362-alpine3.14-jre | 131MB | 62MB| 63% |
 
 ### ARM64
 |Base Image|Uncompressed Size| Compressed Size| % Compressed |
 |---|----| ----------------------------|----|
 | eclipse-temurin:8u362-b08-jre-jammy | 227MB | 96MB |  100% |
-| ubuntu/chiselled-jre:8_edge | 119MB | 57MB| 59% |
+| ubuntu/jre:8_edge | 119MB | 57MB| 59% |
 
 
 ### Test Environment
@@ -162,23 +162,23 @@ The startup times were evaluated by starting a Spring Boot standalone container 
 ### AMD64
 |Image| Minimum (seconds) | Average (seconds) | Maximum (seconds) | Standard Error|
 |-----|-------------------|-------------------|-------------------|-------------------|
-| chiselled jre| 3.21   | 3.62  |4.40|  0.04 |
+| Ubuntu JRE| 3.21   | 3.62  |4.40|  0.04 |
 | temurin | 3.28    | 3.66  | 3.98 |    0.04 |
-| corretto| 3.703   | 4.06 |    4.50    | 0.03 |
+| Corretto| 3.703   | 4.06 |    4.50    | 0.03 |
 
-The chiselled jre and temurin images have no statistical differences in the startup time and Corretto image is significantly slower, which can be explained by a different runtime.
+The Ubuntu JRE and Temurin images have no statistical differences in the startup time and Corretto image is significantly slower, which can be explained by a different runtime.
 
 ### ARM64
 |Image| Minimum (seconds) | Average (seconds) | Maximum (seconds) | Standard Error|
 |-----|-------------------|-------------------|-------------------|-------------------|
-|chiselled jre  | 22.13 | 23.18 |   24.54   | 0.12 |
+|Ubuntu JRE | 22.13 | 23.18 |   24.54   | 0.12 |
 | temurin |  22.14  | 23.12 | 24.41 |   0.13 |
 
-The chiselled jre and temurin images have no statistical differences in the startup time.
+The Ubuntu JRE and Temurin images have no statistical differences in the startup time.
 
 ### Class Data Sharing
 
-The image excludes class data sharing cache. The table below shows the difference in the startup time for the chiselled jre image:
+The image excludes class data sharing cache. The table below shows the difference in the startup time for the Ubuntu JRE image:
 
 | Platform| No Class Data Sharing Average (Seconds) | Class Data Sharing Average (Seconds) |  % Difference |
 |---------|-----------------------------------------|--------------------------| ---|
@@ -198,15 +198,15 @@ The throughput tests were performed using Apache JMeter 5.5 on the `acmeair` app
 
 | Image | Min(requests/second)| Average (requests/seconds) | Max(requests/second)| Standard Error |
 | ------|----------------------|------|----------------| --|
-| chiselled-jre |348.2| 364.18 |376.3| 1.15 |
+| Ubuntu JRE |348.2| 364.18 |376.3| 1.15 |
 | temurin |345.9| 363.23 |384.8 | 1.55 |
-| corretto |336.9| 361.05 | 380.9| 1.71 |
+| Corretto |336.9| 361.05 | 380.9| 1.71 |
 
 ### ARM64
 
 | Image | Min(requests/second)| Average (requests/seconds) | Max(requests/second)| Standard Error |
 | ------|----------------------|------|----------------| --|
-| chiselled-jre |180.9| 213 |221.8| 1.15 |
+| Ubuntu JRE |180.9| 213 |221.8| 1.15 |
 | temurin | 170.1| 215 | 230.5| 2.24 |
 
 
@@ -214,7 +214,7 @@ The data shows no statistical difference for the standalone Spring Application.
 
 ## `acmeair` on Apache Tomcat
 
-In this test the official tomcat images were used for temurin and corretto:
+In this test the official tomcat images were used for Temurin and Corretto:
  - `tomcat:9.0.72-jre8-temurin-jammy`
  - `tomcat:9.0.72-jdk8-corretto-al2`
 
@@ -222,27 +222,27 @@ In this test the official tomcat images were used for temurin and corretto:
 
 | Image | Min(requests/second)| Average (requests/seconds) | Max(requests/second)| Standard Error |
 | ------|----------------------|------|----------------| --|
-| chiselled-jre |338.7| 362.18 | 377.7| 1.54 |
-| temurin | 349.8| 365.77 | 377.8| 1.13 |
-| corretto |336.2| 348.05 |373.9| 1.82 |
+| Ubuntu JRE |338.7| 362.18 | 377.7| 1.54 |
+| Temurin | 349.8| 365.77 | 377.8| 1.13 |
+| Corretto |336.2| 348.05 |373.9| 1.82 |
 
 ### ARM64
 
 | Image | Min(requests/second)| Average (requests/seconds) | Max(requests/second)| Standard Error |
 | ------|----------------------|------|----------------| --|
-| chiselled-jre |163| 206.17 | 225.8 | 2.09 |
-| temurin | 150.2| 207.34 | 220.4| 2.54 |
-| corretto |147.2 |191.60   |205 | 2.11  |
+| Ubuntu JRE |163| 206.17 | 225.8 | 2.09 |
+| Temurin | 150.2| 207.34 | 220.4| 2.54 |
+| Corretto |147.2 |191.60   |205 | 2.11  |
 
-The data shows no statistical difference for the standalone Spring Application between chiselled jre and Temurin images, with a slightly lower performance of the Corretto image.
+The data shows no statistical difference for the standalone Spring Application between Ubuntu JRE and Temurin images, with a slightly lower performance of the Corretto image.
 
 ### Conclusion
 
-The chiselled JRE image of OpenJDK 8 provides a 52% reduction in the size of the compressed image compared to Temurin and 1% smaller than the Amazon Corretto image.
-The chiselled JRE image does not degrade throughput or startup performance compared to the evaluated images.
+The Ubuntu JRE image of OpenJDK 8 provides a 52% reduction in the size of the compressed image compared to Temurin and 1% smaller than the Amazon Corretto image.
+The Ubuntu JRE image does not degrade throughput or startup performance compared to the evaluated images.
 
 ## License
 
 The source code in this project is licensed under the [Apache 2.0 LICENSE](./LICENSE).
 **This is not the end-user license for the resulting container image.**
-The software pulled at build time and shipped with the resulting image is licensed under a separate [LICENSE](./chiselled-jre/LICENSE).
+The software pulled at build time and shipped with the resulting image is licensed under a separate [LICENSE](./jre/LICENSE).
