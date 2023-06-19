@@ -32,6 +32,7 @@ ARG GID
 SHELL ["/bin/bash", "-oeux", "pipefail", "-c"]
 COPY --from=chisel /opt/chisel-releases /opt/chisel-releases
 # use Java 8 headless AWT depedendencies
+
 RUN mkdir -p /rootfs \
       && chisel cut --release /opt/chisel-releases --root /rootfs \
         openjdk-8-jre-headless_awt

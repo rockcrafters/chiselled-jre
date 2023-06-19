@@ -3,10 +3,10 @@ set -ex
 
 echo "Running tests..."
 
-export BASE_IMAGE=${1:-"ubuntu/chiselled-jre:test"}
-export BUILD_IMAGE=${2:-"ubuntu/chiselled-jre:test-builder"}
+export BASE_IMAGE=${1:-"ubuntu/jre:test"}
+export BUILD_IMAGE=${2:-"ubuntu/jre:test-builder"}
 export M2_CACHE=${3:-"/tmp/.m2"}
-export MAVEN_IMAGE=${4:-"ubuntu/chiselled-jre:test-maven"}
+export MAVEN_IMAGE=${4:-"ubuntu/jre:test-maven"}
 
 compile() {
 	javac -source 17 -target 17 $1 $2

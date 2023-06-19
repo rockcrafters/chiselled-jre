@@ -50,7 +50,7 @@ DOCKER_OPTS="--rm --tmpfs /tmp:exec \
 
 # add shell to allow maven tests
 cp /bin/sh sh
-docker build --build-arg BASE_IMAGE=${BASE_IMAGE:-ubuntu/chiselled-jre:17_edge} \
+docker build --build-arg BASE_IMAGE=${BASE_IMAGE:-ubuntu/jre:17_edge} \
     -t ${PETCLINIC_TAG} .
 
 # We should replace Temurin with our dev container

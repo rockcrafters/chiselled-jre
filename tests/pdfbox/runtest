@@ -17,6 +17,7 @@ if [ -z $M2_CACHE ]; then
 fi
 
 VERSION=3.0.0-alpha3-patch
+
 APP=pdfbox
 TEST_DIR=`pwd`
 

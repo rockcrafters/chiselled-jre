@@ -1,4 +1,4 @@
-name: chiselled-jre
+name: jre
 version: 17
 base: 22.04
 platforms:
