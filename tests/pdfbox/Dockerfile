@@ -7,7 +7,7 @@ ARG GID=101
 
 FROM golang:1.18 AS chisel
 ARG UBUNTU_RELEASE
-RUN git clone -b jre8-jammy-slices https://github.com/cjdcordeiro/chisel-releases /opt/chisel-releases \
+RUN git clone https://github.com/canonical/chisel-releases /opt/chisel-releases \
     && git clone --depth 1 -b main https://github.com/canonical/chisel /opt/chisel
 WORKDIR /opt/chisel
 RUN go generate internal/deb/version.go \
