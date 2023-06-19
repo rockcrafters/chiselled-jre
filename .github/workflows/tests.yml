@@ -1,11 +1,11 @@
-name: "Ubuntu 'chiselled-jre' Tests"
+name: "Chiselled Ubuntu 'jre' Tests"
 
 on:
   pull_request:
   push:
 
 env:
-  image-name: ubuntu/chiselled-jre:test
+  image-name: ubuntu/jre:test
   build-image-name: temurin-jdk8-builder:test
   maven-image-name: temurin-jdk8-maven:test
   maven-image-base: maven:3.9.0-eclipse-temurin-8
@@ -51,7 +51,7 @@ jobs:
           restore-keys: |
             tests-petclinic-test-spring-petclinic
 
-      - name: Build the chiselled-jre image
+      - name: Build the jre image
         run: |
           docker build \
           -t ${{ env.image-name }} \
@@ -112,7 +112,7 @@ jobs:
           dockerfile: chiselled-jre/Dockerfile.${{ matrix.ubuntu-release }}
           ignore: DL3008,DL3015,SC3028
 
-      - name: Build the chiselled-jre image
+      - name: Build the jre image
         run: |
           docker buildx build \
           --tag=${{ env.image-name }} \

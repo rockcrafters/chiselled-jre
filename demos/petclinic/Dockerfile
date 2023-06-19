@@ -1,7 +1,7 @@
 ARG PETCLINIC_REPO
 ARG PETCLINIC_TAG
 
-ARG BASE_IMAGE=ubuntu/chiselled-jre:8_edge
+ARG BASE_IMAGE=ubuntu/jre:8_edge
 ARG USER=app
 ARG UID=101
 ARG GROUP=app
