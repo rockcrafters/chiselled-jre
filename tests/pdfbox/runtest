@@ -17,7 +17,7 @@ if [ -z $M2_CACHE ]; then
 fi
 
 VERSION=3.0.0-alpha3-patch
-APP=pdfbox-${VERSION}
+APP=pdfbox
 TEST_DIR=`pwd`
 
 docker build -t ${APP} --build-arg MAVEN_IMAGE=${MAVEN_IMAGE} .
