@@ -1,4 +1,4 @@
-# Chiseled Ubuntu for JRE
+# Chiselled Ubuntu for JRE
 
 The different releases of this Ubuntu JRE image are maintained via
 channel branches (e.g. `channels/8/edge`).
