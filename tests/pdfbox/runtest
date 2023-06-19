@@ -16,9 +16,11 @@ if [ -z $M2_CACHE ]; then
     exit 1
 fi
 
-VERSION=2.0.27
-APP=pdfbox-${VERSION}
+VERSION=2.0.28-patched
+APP=pdfbox
 TEST_DIR=`pwd`
+
+docker build -t ${APP} --build-arg MAVEN_IMAGE=${MAVEN_IMAGE} .
 
 DOCKER_OPTS="--rm  \
     --tmpfs /tmp:exec \
@@ -28,13 +30,12 @@ DOCKER_OPTS="--rm  \
     -w ${TEST_DIR}/${APP} "
 
 if [ ! -d ${APP} ]; then
-    curl -o ${APP}-src.zip  https://dlcdn.apache.org/pdfbox/${VERSION}/${APP}-src.zip
-    (unzip -o ${APP}-src.zip && cd ${APP} && git apply ../TestCreateSignature.patch)
+    git clone -b ${VERSION} https://github.com/vpa1977/pdfbox
 fi
 
 # build and tests with chiselled jre
 docker run \
     ${DOCKER_OPTS} \
-    ${MAVEN_IMAGE} \
+    ${APP} \
         -Dmaven.repo.local="${M2_CACHE}" \
         test

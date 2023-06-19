@@ -1,11 +1,11 @@
-name: "Ubuntu 'chiselled-jre' Tests"
+name: "Chiselled Ubuntu 'jre' Tests"
 
 on:
   pull_request:
   push:
 
 env:
-  image-name: ubuntu/chiselled-jre:test
+  image-name: ubuntu/jre:test
   build-image-name: temurin-jdk8-builder:test
   maven-image-name: temurin-jdk8-maven:test
   maven-image-base: maven:3.9.0-eclipse-temurin-8
@@ -38,10 +38,10 @@ jobs:
       - name: Tests PDFBox
         uses: actions/cache@v3
         with:
-          path: tests/pdfbox/pdfbox-2.0.27
-          key: tests-pdfbox-pdfbox-2.0.27
+          path: tests/pdfbox/pdfbox
+          key: tests-pdfbox-test-pdbbox
           restore-keys: |
-            tests-pdfbox-pdfbox-2.0.27
+            tests-pdfbox-test-pdbbox
 
       - name: Tests Petclinic
         uses: actions/cache@v3
@@ -51,14 +51,14 @@ jobs:
           restore-keys: |
             tests-petclinic-test-spring-petclinic
 
-      - name: Build the chiselled-jre image
+      - name: Build the jre image
         run: |
           docker build \
           -t ${{ env.image-name }} \
           --build-arg UID=$(id -u ${USER}) \
           --build-arg GID=$(id -g ${USER}) \
-          -f chiselled-jre/Dockerfile.${{ matrix.ubuntu-release }} \
-          chiselled-jre
+          -f jre/Dockerfile.${{ matrix.ubuntu-release }} \
+          jre
 
       - name: Build the JDK docker image
         run: |
@@ -109,13 +109,13 @@ jobs:
       - name: Lint the Dockerfile
         uses: hadolint/hadolint-action@v3.1.0
         with:
-          dockerfile: chiselled-jre/Dockerfile.${{ matrix.ubuntu-release }}
+          dockerfile: jre/Dockerfile.${{ matrix.ubuntu-release }}
           ignore: DL3008,DL3015,SC3028
 
-      - name: Build the chiselled-jre image
+      - name: Build the jre image
         run: |
           docker buildx build \
           --tag=${{ env.image-name }} \
-          --file=chiselled-jre/Dockerfile.${{ matrix.ubuntu-release }} \
+          --file=jre/Dockerfile.${{ matrix.ubuntu-release }} \
           --platform=linux/${{ matrix.arch }} \
-          chiselled-jre
+          jre
