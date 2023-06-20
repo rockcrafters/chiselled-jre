@@ -4,7 +4,7 @@ ARG UID=101
 ARG GROUP=app
 ARG GID=101
 
-FROM golang:1.18 AS chisel
+FROM golang:1.20 AS chisel
 ARG UBUNTU_RELEASE
 RUN git clone https://github.com/canonical/chisel-releases /opt/chisel-releases \
     && git clone --depth 1 -b main https://github.com/canonical/chisel /opt/chisel
