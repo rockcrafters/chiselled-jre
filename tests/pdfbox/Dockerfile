@@ -1,5 +1,5 @@
 ARG MAVEN_IMAGE
-ARG UBUNTU_RELEASE=22.04
+ARG UBUNTU_RELEASE=22.10
 ARG USER=app
 ARG UID=101
 ARG GROUP=app
@@ -13,7 +13,7 @@ WORKDIR /opt/chisel
 RUN go generate internal/deb/version.go \
     && go build ./cmd/chisel
 
-FROM public.ecr.aws/ubuntu/ubuntu:$UBUNTU_RELEASE@sha256:2c1168b31e636c7ab22598bfaefa6de63d1806a908d0c39bd402277881356fab AS builder
+FROM public.ecr.aws/ubuntu/ubuntu:$UBUNTU_RELEASE@sha256:f5dc8b9d6e247c67172dd94340415094742c11edf536dd69ee83cde3f5aca3ed AS builder
 SHELL ["/bin/bash", "-oeux", "pipefail", "-c"]
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y ca-certificates \
