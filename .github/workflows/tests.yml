@@ -6,9 +6,9 @@ on:
 
 env:
   image-name: ubuntu/jre:test
-  build-image-name: temurin-jdk8-builder:test
-  maven-image-name: temurin-jdk8-maven:test
-  maven-image-base: maven:3.9.0-eclipse-temurin-8
+  build-image-name: temurin-jdk17-builder:test
+  maven-image-name: temurin-jdk17-maven:test
+  maven-image-base: maven:3.9.1-eclipse-temurin-17
 
 jobs:
   build:
@@ -25,7 +25,7 @@ jobs:
       - uses: actions/setup-java@v3
         with:
           distribution: 'temurin' # See 'Supported distributions' for available options
-          java-version: '8'
+          java-version: '17'
 
       - name: Tests Maven cache
         uses: actions/cache@v3
@@ -38,10 +38,10 @@ jobs:
       - name: Tests PDFBox
         uses: actions/cache@v3
         with:
-          path: tests/pdfbox/pdfbox
-          key: tests-pdfbox-test-pdbbox
+          path: tests/pdfbox/pdfbox-3.0.0-alpha3
+          key: tests-pdfbox-pdfbox-3.0.0-alpha3
           restore-keys: |
-            tests-pdfbox-test-pdbbox
+            tests-pdfbox-pdfbox-3.0.0-alpha3
 
       - name: Tests Petclinic
         uses: actions/cache@v3

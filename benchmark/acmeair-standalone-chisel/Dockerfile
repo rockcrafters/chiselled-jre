@@ -1,6 +1,6 @@
 # Uncomment to enable CDS
 #FROM eclipse-temurin:8u362-b09-jre-jammy as builder
-FROM ubuntu/jre:8_edge
+FROM ubuntu/jre:17_edge
 #COPY --from=builder /opt/java/openjdk/lib/classlist /usr/lib/jvm/java-8-openjdk-amd64/jre/lib
 #COPY --from=builder /bin/sh /bin/sh
 #USER root

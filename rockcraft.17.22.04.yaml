@@ -1,5 +1,5 @@
 name: jre
-version: 8
+version: 17
 base: 22.04
 platforms:
   amd64:

@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=ubuntu/jre:8_edge
+ARG BASE_IMAGE=ubuntu/jre:17_edge
 ARG TOMCAT_IMAGE=acmeair-tomcat
 # Use x86_64 for amd64 and aarch64 for arm64
 ARG ARCH=x86_64

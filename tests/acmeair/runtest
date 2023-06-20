@@ -35,5 +35,5 @@ git clone --branch ${TAG} ${ACMEAIR_REPO} || \
 docker run \
     ${DOCKER_OPTS} \
     ${MAVEN_IMAGE} \
-        -Dmaven.repo.local="${M2_CACHE}" \
+        -X -e  -Dmaven.repo.local="${M2_CACHE}" \
         test

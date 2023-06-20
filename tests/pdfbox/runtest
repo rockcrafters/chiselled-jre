@@ -16,7 +16,8 @@ if [ -z $M2_CACHE ]; then
     exit 1
 fi
 
-VERSION=2.0.28-patched
+VERSION=3.0.0-alpha3-patch
+
 APP=pdfbox
 TEST_DIR=`pwd`
 
