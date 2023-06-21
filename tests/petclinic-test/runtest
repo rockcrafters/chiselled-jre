@@ -1,18 +1,13 @@
 #!/bin/bash
 set -ex
 
-# This test builds tests for spring-petclinic with Maven, copies class files
-# into the chiselled container and executes them in the container environemnt.
+# This test builds and runs tests for spring-petclinic using Maven inside
+# chiselled JRE container
 
 echo "Running Spring Petclinic self-tests"
 
-if [ -z $BUILD_IMAGE ]; then
-    echo 'Please define $BUILD_IMAGE'
-    exit 1
-fi
-
-if [ -z $BASE_IMAGE ]; then
-    echo 'Please define $BASE_IMAGE'
+if [ -z $MAVEN_IMAGE ]; then
+    echo 'Please define $MAVEN_IMAGE'
     exit 1
 fi
 
@@ -24,46 +19,26 @@ fi
 # clone petclinic repository, alternative is to have a submodule here
 TEST_DIR=`pwd`
 PROJECT=spring-petclinic
-PROJECT_DIR=${TEST_DIR}/${PROJECT}
 
-PETCLINIC_TAG=spring-boot-2.7.3
+PETCLINIC_TAG=spring-boot-3.0.6
 PETCLINIC_REPO=https://github.com/vpa1977/${PROJECT}
-echo cloning $PETCLINIC_TAG $PETCLINIC_REPO
-git clone --branch $PETCLINIC_TAG $PETCLINIC_REPO || \
+echo cloning ${PETCLINIC_TAG} ${PETCLINIC_REPO}
+git clone --branch ${PETCLINIC_TAG} ${PETCLINIC_REPO} || \
     (cd ${PROJECT} && \
      git checkout ${PETCLINIC_TAG} &&
      git reset --hard)
 
-WRAPPER_JAR=${PROJECT_DIR}/.mvn/wrapper/maven-wrapper.jar
-MAVEN_COMMAND="-classpath ${WRAPPER_JAR} \
-                  -Dmaven.home=${M2_CACHE}
-                  -Dmaven.repo.local=${M2_CACHE} \
-                  -Dmaven.repo.local=${M2_CACHE} \
-                  -Dmaven.multiModuleProjectDirectory=${PROJECT_DIR} \
-                  org.apache.maven.wrapper.MavenWrapperMain"
-
-DOCKER_OPTS="--rm --tmpfs /tmp:exec \
+# We should replace Temurin with our dev container
+DOCKER_OPTS="--rm  \
+    --tmpfs /tmp:exec \
+    -u app \
     -v ${M2_CACHE}:${M2_CACHE} \
     -v ${TEST_DIR}:${TEST_DIR} \
-    -w ${TEST_DIR}/spring-petclinic\
-    -u app"
-
-# add shell to allow maven tests
-cp /bin/sh sh
-docker build --build-arg BASE_IMAGE=${BASE_IMAGE:-ubuntu/jre:17_edge} \
-    -t ${PETCLINIC_TAG} .
-
-# We should replace Temurin with our dev container
-docker run \
-    ${DOCKER_OPTS} \
-    ${BUILD_IMAGE} \
-    java \
-    ${MAVEN_COMMAND} \
-    -q test-compile
+    -w ${TEST_DIR}/${PROJECT} "
 
 # now run the tests within our container
 docker run \
     ${DOCKER_OPTS} \
-    ${PETCLINIC_TAG} \
-    ${MAVEN_COMMAND} \
-    test
+    ${MAVEN_IMAGE} \
+        -Dmaven.repo.local="${M2_CACHE}" \
+        test

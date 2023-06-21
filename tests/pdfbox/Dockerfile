@@ -7,7 +7,7 @@ ARG GID=101
 
 FROM golang:1.20 AS chisel
 ARG UBUNTU_RELEASE
-RUN git clone https://github.com/canonical/chisel-releases /opt/chisel-releases \
+RUN git clone --depth 1 -b ubuntu-22.04 https://github.com/canonical/chisel-releases /opt/chisel-releases \
     && git clone --depth 1 -b main https://github.com/canonical/chisel /opt/chisel
 WORKDIR /opt/chisel
 RUN go generate internal/deb/version.go \
@@ -31,11 +31,12 @@ ARG GROUP
 ARG GID
 SHELL ["/bin/bash", "-oeux", "pipefail", "-c"]
 COPY --from=chisel /opt/chisel-releases /opt/chisel-releases
-# use Java 8 headless AWT depedendencies
-
 RUN mkdir -p /rootfs \
       && chisel cut --release /opt/chisel-releases --root /rootfs \
-        openjdk-8-jre-headless_awt
+        liblcms2-2_libs \
+        libfontconfig1_libs \
+        libfreetype6_libs \
+        libjpeg-turbo8_libs
 
 FROM $MAVEN_IMAGE
 COPY --from=sliced-deps /rootfs /
