@@ -3,7 +3,7 @@
 SHELL=/bin/bash
 
 IMAGE_TEMURIN=eclipse-temurin:17.0.7_7-jre-jammy
-IMAGE_DISTROLESS=ubuntu/chiselled-jre:17_edge azul/zulu-openjdk-distroless:17.0.7-17.42.19 gcr.io/distroless/java17-debian11
+IMAGE_DISTROLESS=ubuntu/jre:17_edge azul/zulu-openjdk-distroless:17.0.7-17.42.19 gcr.io/distroless/java17-debian11
 IMAGE_YUM=amazoncorretto:17.0.7-al2023-headless
 IMAGE_ALPINE=eclipse-temurin:17.0.7_7-jre-alpine
 STANDALONE_IMAGES=$(IMAGE_TEMURIN) $(IMAGE_DISTROLESS) $(IMAGE_YUM) $(IMAGE_ALPINE)
