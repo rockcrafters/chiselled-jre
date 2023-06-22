@@ -1,5 +1,5 @@
 ARG UBUNTU_RELEASE=22.04
-ARG BASE_IMAGE=ubuntu/chiselled-jre:17_edge
+ARG BASE_IMAGE=ubuntu/jre:17_edge
 FROM golang:1.18 AS chisel
 ARG UBUNTU_RELEASE
 RUN git clone -b tomcat-dependencies https://github.com/vpa1977/chisel-releases /opt/chisel-releases \
