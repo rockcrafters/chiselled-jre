@@ -80,6 +80,10 @@ jobs:
           -f tests/containers/maven/Dockerfile.${{ matrix.ubuntu-release }} \
           tests/containers/maven
 
+      - name: Build benchmark docker images
+        run: |
+          cd benchmark && make
+
       - name: Run Tests
         working-directory: ${{ github.workspace }}/tests/
         run: |
