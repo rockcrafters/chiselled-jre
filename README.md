@@ -32,17 +32,17 @@ The chiselled JRE container is built based on the Ubuntu 22.04 version of Java 1
 This section provides a comparison with readily-available Java 17 runtime images from the most popular distributions:
  - Eclipse Adoptium publishes multiple [Java runtime images](https://github.com/adoptium/containers/tree/main/17/jre) for Java 17. We will evaluate Ubuntu Jammy [`eclipse-temurin:17.0.7_7-jre-jammy`](https://github.com/adoptium/containers/blob/main/17/jre/ubuntu/jammy/Dockerfile.releases.full) and Alpine-based [`eclipse-temurin:17.0.7_7-jre-alpine`](https://github.com/adoptium/containers/blob/main/17/jre/alpine/Dockerfile.releases.full) images.
  - Amazon Corretto publishes Java 17 image based on Amazon Linux 2023 [`amazoncorretto:17.0.7-al2023-headless`](https://github.com/corretto/corretto-docker/tree/main/17/headless/al2023)
- - Azul Zulu  publishes multiple [Java runtime images](https://github.com/zulu-openjdk/zulu-openjdk) for Java 17. Will will evaluate distroless [`azul/zulu-openjdk-distroless:17.0.7-17.42.19`](https://github.com/zulu-openjdk/zulu-openjdk/tree/master/distroless/17.0.7-17.42.19).
+ - Azul Zulu publishes multiple [Java runtime images](https://github.com/zulu-openjdk/zulu-openjdk) for Java 17. Will will evaluate distroless [`azul/zulu-openjdk-distroless:17.0.7-17.42.19`](https://github.com/zulu-openjdk/zulu-openjdk/tree/master/distroless/17.0.7-17.42.19).
  - [Oracle](https://github.com/oracle/docker-images/tree/main/OracleJava) only publishes JDK image.
  - Google provides distroless [`gcr.io/distroless/java17-debian11`](https://github.com/GoogleContainerTools/distroless/tree/main/java) Java 17 image.
 
 ### Image size
 
-The evaluted images are built using the different processes and this affects the resulting image size.
+The evaluated images are built using the different processes and this affects the resulting image size.
 
-Eclipse Temurin images use `ubuntu:22.04` or `alpine:3.18` base images and extract Adoptium's build of Java 17 Runtime built with OpenJDK `legacy-jre-image` target. It contains hotspot binaries and a base list of modules required for the runtime and generated from the JDK image with the `jlink` tool. It includes class data sharing cache.
+Eclipse Temurin images use `ubuntu:22.04` or `alpine:3.18` base images and extract Adoptium's build of Java 17 Runtime built with OpenJDK `legacy-jre-image` target. It contains hotspot binaries and a base list of modules required for the runtime and is generated from the JDK image with the `jlink` tool. It includes a class data-sharing cache.
 
-Azul Zulu packages a limited set of binaries and a full set of JDK modules. It includes class data sharing cache. It only installs base dependencies (`libc` and `libnss`) and none of the Abstract Window Toolkit (AWT) such as fontconfig despite having AWT binaries present in the Java runtime.
+Azul Zulu packages a limited set of binaries and a full set of JDK modules. It includes class data-sharing cache. It only installs base dependencies (`libc` and `libnss`) and none of the Abstract Window Toolkit (AWT) such as fontconfig despite having AWT binaries present in the Java runtime.
 
 Amazon Corretto installs Java JDK package in `amazonlinux:2023` with all package dependencies. It packages a limited set of binaries and a full set of JDK modules.
 
@@ -50,7 +50,7 @@ Google distroless image is built by installing Debian openjdk-17-jre-headless pa
 
 Java 17 in chiselled Ubuntu is built by running `jlink` with a base list of modules required for the runtime in a normal Ubuntu 22.04 Jammy container. The dependencies are chiselled and copied into a scratch container along with the generated Java runtime.
 
-As shown in the tables below the best space efficiency is achieved by Java 17 in chiselled Ubuntu with both approaches combined. `jlink` provides best space saving and it is further augmented by having only Java library dependencies in the resulting image.
+As shown in the tables below the best space efficiency is achieved by Java 17 in chiselled Ubuntu with both approaches combined. `jlink` provides the best space saving and it is further augmented by having only Java library dependencies in the resulting image.
 
 ### AMD64
 
@@ -190,7 +190,7 @@ The chiselled jre and temurin images have no statistical differences in the star
 
 ### Throughput tests
 
-The throughput tests were performed using Apache JMeter 5.5 on the `acmeair` application with the following command: ``jmeter -n -t AcmeAir-v5.jmx -DusePureIDs=true -JHOST=${HOST} -JPORT=9080 -j `pwd`/performance${i}.log -JTHREAD=1 -JUSER=10 -JDURATION=60 -JRAMP=0 ;``. The command was executed 33 times against running container and the database was cleared between commands. The result of the first three commands were ignored to account for the virtual machine warmup.
+The throughput tests were performed using Apache JMeter 5.5 on the `acmeair` application with the following command: ``jmeter -n -t AcmeAir-v5.jmx -DusePureIDs=true -JHOST=${HOST} -JPORT=9080 -j `pwd`/performance${i}.log -JTHREAD=1 -JUSER=10 -JDURATION=60 -JRAMP=0 ;``. The command was executed 33 times against the running container and the database was cleared between commands. The result of the first three commands was ignored to account for the virtual machine warmup.
 
 ## `acmeair` Standalone Spring Application
 
@@ -218,7 +218,7 @@ The data shows no statistical difference for the standalone Spring Application.
 
 ## `acmeair` on Apache Tomcat
 
-In this test the official tomcat images were used for temurin:
+In this test, the official tomcat images were used for temurin:
  - `tomcat:10.1.9-jre17-temurin-jammy`
 
 Other images were built by compiling Apache Tomcat 10.1.9 with native extensions and copying it into the source container
