@@ -9,8 +9,8 @@ services:
       - acme
 
   tomcat:
-    container_name: acmeair-tomcat
-    image: acmeair-tomcat
+    container_name: acmeair
+    image: $IMAGE
     networks:
       - acme
     ports:

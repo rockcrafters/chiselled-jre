@@ -1,0 +1,51 @@
+ARG BASE_IMAGE
+
+FROM fedora as builder
+
+ENV CATALINA_HOME /usr/local/tomcat
+ENV PATH $CATALINA_HOME/bin:$PATH
+RUN mkdir -p "$CATALINA_HOME"
+WORKDIR $CATALINA_HOME
+ENV TOMCAT_NATIVE_LIBDIR $CATALINA_HOME/native-jni-lib
+ENV LD_LIBRARY_PATH ${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$TOMCAT_NATIVE_LIBDIR
+ENV JAVA_HOME /usr/lib/jvm/java-17
+RUN yum install -y gzip tar \
+            apr-devel \
+            gcc \
+            make \
+            openssl-devel \
+            java-17-openjdk-devel \
+            redhat-rpm-config
+
+ADD build-tomcat.sh /
+RUN /build-tomcat.sh
+RUN rm /build-tomcat.sh
+
+FROM $BASE_IMAGE
+RUN yum install -y --setopt=skip_missing_names_on_install=False openssl apr || \
+    apk add openssl apr
+
+ENV CATALINA_HOME /usr/local/tomcat
+ENV PATH $CATALINA_HOME/bin:$PATH
+RUN mkdir -p "$CATALINA_HOME"
+WORKDIR $CATALINA_HOME
+
+# let "Tomcat Native" live somewhere isolated
+ENV TOMCAT_NATIVE_LIBDIR $CATALINA_HOME/native-jni-lib
+ENV LD_LIBRARY_PATH ${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$TOMCAT_NATIVE_LIBDIR
+
+COPY --from=builder /usr/local/tomcat /usr/local/tomcat
+# verify Tomcat Native is working properly
+RUN set -eux; \
+    nativeLines="$(catalina.sh configtest 2>&1)"; \
+    if ! echo "$nativeLines" | grep 'Loaded Apache Tomcat Native library' >&2; then \
+        echo >&2 "$nativeLines"; \
+        exit 1; \
+    fi
+
+# add application
+ADD config/server.xml /usr/local/tomcat/conf/server.xml
+ADD acmeair-java-2.0.0-SNAPSHOT.war /usr/local/tomcat/webapps
+
+EXPOSE 8080
+CMD ["catalina.sh", "run"]
