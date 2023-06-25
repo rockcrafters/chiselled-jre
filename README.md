@@ -44,7 +44,7 @@ Eclipse Temurin images use `ubuntu:22.04` or `alpine:3.18` base images and extra
 
 Azul Zulu packages a limited set of binaries and a full set of JDK modules. It includes a class data-sharing cache. It only installs base dependencies (`libc` and `libnss`) and none of the Abstract Window Toolkit (AWT) such as `fontconfig` despite having AWT binaries present in the Java runtime.
 
-Amazon Corretto installs Java JDK package in `amazonlinux:2023` with all package dependencies. It packages a limited set of binaries and a full set of JDK modules.
+Amazon Corretto installs the Java JDK package in `amazonlinux:2023` with all package dependencies. It packages a limited set of binaries and a full set of JDK modules.
 
 The Google distroless image is built by installing the Debian openjdk-17-jre-headless package and its dependencies and copying them into a scratch container. It contains a limited set of binaries and a full set of JDK modules.
 
