@@ -1,6 +1,6 @@
-# Chiselled JRE
+# Chiselled Ubuntu for JRE
 
-The different releases of this chiselled Ubuntu image are maintained via
+The different releases of this Ubuntu JRE image are maintained via
 channel branches (e.g. `channels/17/edge`).
 
 Read more about the repository structure and build automation [here](<https://github.com/ubuntu-rocks/.github/blob/main/profile/README.md#-joining-the-ubuntu-rocks-project>).
@@ -25,9 +25,9 @@ Snyk 2021 [JVM Ecosystem](https://snyk.io/jvm-ecosystem-report-2021/) had the fo
 
 The differences in vendor distribution could be attributed to the audience providing survey responses.
 
-The cloud vendors traditionally offered `amd64`-based virtual machines, though recently they have started to provide `arm64` offerings, such as [Amazon Graviton](https://aws.amazon.com/ec2/graviton/). This image evaluation will focus on `amd64` and `arm64` platforms.
+The cloud vendors traditionally offered `amd64`-based virtual machines, though recently they have started to provide `arm64` offerings, such as [Amazon Graviton](https://aws.amazon.com/ec2/graviton/). This image evaluation will focus on the `amd64` and `arm64` platforms.
 
-The chiselled JRE container is built based on the Ubuntu 22.04 version of Java 17 runtime - `17.0.7+7`. In
+The Ubuntu JRE container is built based on the Ubuntu 22.04 version of Java 17 runtime - `17.0.7+7`. In
 
 This section provides a comparison with readily-available Java 17 runtime images from the most popular distributions:
  - Eclipse Adoptium publishes multiple [Java runtime images](https://github.com/adoptium/containers/tree/main/17/jre) for Java 17. We will evaluate Ubuntu Jammy [`eclipse-temurin:17.0.7_7-jre-jammy`](https://github.com/adoptium/containers/blob/main/17/jre/ubuntu/jammy/Dockerfile.releases.full) and Alpine-based [`eclipse-temurin:17.0.7_7-jre-alpine`](https://github.com/adoptium/containers/blob/main/17/jre/alpine/Dockerfile.releases.full) images.
@@ -61,7 +61,7 @@ As shown in the tables below the best space efficiency is achieved by Java 17 in
 |amazoncorretto:17.0.7-al2023-headless	|356|	127	|142.69|
 |azul/zulu-openjdk-distroless:17.0.7-17.42.19| 	185|	63|	70.78|
 |gcr.io/distroless/java17-debian11	|223|	82|	92.13|
-|ubuntu/chiselled-jre:17_edge|	125|	44|	49.43|
+|ubuntu/jre:17_edge|	125|	44|	49.43|
 
 
 ### ARM64
@@ -70,7 +70,7 @@ As shown in the tables below the best space efficiency is achieved by Java 17 in
 |-----|----| ----------------------------| -------------|
 |eclipse-temurin:17-jre-jammy|	254|	87	|100|
 |gcr.io/distroless/java17-debian11|	218|	80	|91.9540229885057|
-|ubuntu/chiselled-jre:17_edge|	121|	42	|48.2758620689655|
+|ubuntu/jre:17_edge|	121|	42	|48.2758620689655|
 
 
 Below are image sizes of the deployed `acmeair` benchmark application
@@ -85,7 +85,7 @@ Below are image sizes of the deployed `acmeair` benchmark application
 |standalone-amazoncorretto:17.0.7-al2023-headless|	379	|147	|134.86|
 |standalone-azul/zulu-openjdk-distroless:17.0.7-17.42.19|	208|	83|	76.14|
 |standalone-gcr.io/distroless/java17-debian11	|246|	102|	93.57|
-|standalone-ubuntu/chiselled-jre:17_edge	|147|	65	|59.63|
+|standalone-ubuntu/jre:17_edge	|147|	65	|59.63|
 
 
 ### ARM64
@@ -93,7 +93,7 @@ Below are image sizes of the deployed `acmeair` benchmark application
 |---|----| ----------------------------|----|
 |standalone-eclipse-temurin:17.0.7_7-jre-jammy|	277	|108|	100|
 |standalone-gcr.io/distroless/java17-debian11|	241	|101|	93.51|
-|standalone-ubuntu/chiselled-jre:17_edge|143| 63|58.33|
+|standalone-ubuntu/jre:17_edge|143| 63|58.33|
 
 
 ### Test Environment
@@ -175,18 +175,18 @@ The startup times were evaluated by starting a Spring Boot standalone container 
 |standalone-amazoncorretto:17.0.7-al2023-headless|2.97|3.35|3.82|0.04|
 |standalone-azul/zulu-openjdk-distroless:17.0.7-17.42.19 |3.17|3.55|3.96|0.04|
 |standalone-gcr.io/distroless/java17-debian11|2.80|3.37|3.68|0.04|
-|standalone-ubuntu/chiselled-jre:17_edge|2.93|3.36|3.75|0.03|
+|standalone-ubuntu/jre:17_edge|2.93|3.36|3.75|0.03|
 
-The chiselled jre and temurin images have no statistical differences in the startup time.
+The Ubuntu JRE and Temurin images have no statistical differences in the startup time.
 
 ### ARM64
 |Image| Minimum (seconds) | Average (seconds) | Maximum (seconds) | Standard Error|
 |-----|-------------------|-------------------|-------------------|-------------------|
 |standalone-eclipse-temurin:17.0.7_7-jre-jammy|10.92|11.82|12.75|0.09|
 |standalone-gcr.io/distroless/java17-debian11|10.85|11.68|13.37|0.13|
-|standalone-ubuntu/chiselled-jre:17_edge|11.14|11.97|13.51|0.09|
+|standalone-ubuntu/jre:17_edge|11.14|11.97|13.51|0.09|
 
-The chiselled jre and temurin images have no statistical differences in the startup time.
+The Ubuntu JRE and Temurin images have no statistical differences in the startup time.
 
 ### Throughput tests
 
@@ -203,7 +203,7 @@ The throughput tests were performed using Apache JMeter 5.5 on the `acmeair` app
 |standalone-amazoncorretto:17.0.7-al2023-headless|413.20|422.91|434.30|1.03|
 |standalone-azul/zulu-openjdk-distroless:17.0.7-17.42.19 |393.80|409.33|425.80|1.64|
 |standalone-gcr.io/distroless/java17-debian11|413.90|424.52|438.40|1.29|
-|standalone-ubuntu/chiselled-jre:17_edge|410.90|418.38|430.10|0.93|
+|standalone-ubuntu/jre:17_edge|410.90|418.38|430.10|0.93|
 
 ### ARM64
 
@@ -211,14 +211,14 @@ The throughput tests were performed using Apache JMeter 5.5 on the `acmeair` app
 | ------|----------------------|------|----------------| --|
 |standalone-eclipse-temurin:17.0.7_7-jre-jammy|138.10|163.10|170.70|1.48|
 |standalone-gcr.io/distroless/java17-debian11|141.40|165.35|172.00|1.09|
-|standalone-ubuntu/chiselled-jre:17_edge|136.10|163.68|172.50|1.24|
+|standalone-ubuntu/jre:17_edge|136.10|163.68|172.50|1.24|
 
 
 The data shows no statistical difference for the standalone Spring Application.
 
 ## `acmeair` on Apache Tomcat
 
-In this test, the official tomcat images were used for temurin:
+In this test, the official tomcat images were used for Temurin:
  - `tomcat:10.1.9-jre17-temurin-jammy`
 
 Other images were built by compiling Apache Tomcat 10.1.9 with native extensions and copying it into the source container
@@ -232,7 +232,7 @@ Other images were built by compiling Apache Tomcat 10.1.9 with native extensions
 |tomcat-amazoncorretto:17.0.7-al2023-headless|368.00|401.13|410.80|1.54|
 |tomcat-azul/zulu-openjdk-distroless:17.0.7-17.42.19 |375.50|401.53|412.80|1.44|
 |tomcat-gcr.io/distroless/java17-debian11|397.30|408.76|421.60|1.10|
-|tomcat-ubuntu/chiselled-jre:17_edge|384.10|402.82|415.90|1.53|
+|tomcat-ubuntu/jre:17_edge|384.10|402.82|415.90|1.53|
 
 ### ARM64
 
@@ -240,14 +240,14 @@ Other images were built by compiling Apache Tomcat 10.1.9 with native extensions
 | ------|----------------------|------|----------------| --|
 |tomcat:10.1.9-jre17-temurin-jammy|136.80|165.68|174.20|1.58|
 |tomcat-gcr.io/distroless/java17-debian11|130.00|157.62|168.40|1.76|
-|tomcat-ubuntu/chiselled-jre:17_edge|138.50|157.71|166.70|1.42|
+|tomcat-ubuntu/jre:17_edge|138.50|157.71|166.70|1.42|
 
-The data shows no statistical difference for the standalone Spring Application between chiselled jre and Temurin images, with a slightly lower performance of the Corretto image.
+The data shows no statistical difference for the standalone Spring Application between Ubuntu JRE and Temurin images, with a slightly lower performance of the Corretto image.
 
 ### Conclusion
 
-The chiselled JRE image of OpenJDK 8 provides a ~51% reduction in the size of the compressed image compared to Temurin Java 17 runtime image.
-The chiselled JRE image does not degrade throughput or startup performance compared to the evaluated images.
+The Ubuntu JRE image of OpenJDK 8 provides a ~51% reduction in the size of the compressed image compared to Temurin Java 17 runtime image.
+The Ubuntu JRE image does not degrade throughput or startup performance compared to the evaluated images.
 
 ## License
 
