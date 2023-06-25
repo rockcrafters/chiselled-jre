@@ -246,7 +246,7 @@ The data shows no statistical difference for the standalone Spring Application b
 
 ### Conclusion
 
-The Ubuntu JRE image of OpenJDK 8 provides a ~51% reduction in the size of the compressed image compared to Temurin Java 17 runtime image.
+The Ubuntu JRE image of OpenJDK 17 provides a ~51% reduction in the size of the compressed image compared to Temurin Java 17 runtime image.
 The Ubuntu JRE image does not degrade throughput or startup performance compared to the evaluated images.
 
 ## License
