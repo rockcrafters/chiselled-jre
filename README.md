@@ -46,7 +46,7 @@ Azul Zulu packages a limited set of binaries and a full set of JDK modules. It i
 
 Amazon Corretto installs Java JDK package in `amazonlinux:2023` with all package dependencies. It packages a limited set of binaries and a full set of JDK modules.
 
-Google distroless image is built by installing Debian openjdk-17-jre-headless package and its dependencies and copying them into a scratch container. It contains a limited set of binaries and a full set of JDK modules.
+The Google distroless image is built by installing the Debian openjdk-17-jre-headless package and its dependencies and copying them into a scratch container. It contains a limited set of binaries and a full set of JDK modules.
 
 Java 17 in chiselled Ubuntu is built by running `jlink` with a base list of modules required for the runtime in a normal Ubuntu 22.04 Jammy container. The dependencies are chiselled and copied into a scratch container along with the generated Java runtime.
 
