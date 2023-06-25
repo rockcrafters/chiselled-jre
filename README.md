@@ -40,7 +40,8 @@ This section provides a comparison with readily-available Java 17 runtime images
 
 The evaluated images are built using the different processes and this affects the resulting image size.
 
-Eclipse Temurin images use `ubuntu:22.04` or `alpine:3.18` base images and extract Adoptium's build of Java 17 Runtime built with OpenJDK `legacy-jre-image` target. It contains hotspot binaries and a base list of modules required for the runtime and is generated from the JDK image with the `jlink` tool. It includes a class data-sharing cache.
+Eclipse Temurin uses `ubuntu:22.04` or `alpine:3.18` base images. The image contains Adoptium's build of Java 17 Runtime built with OpenJDK `legacy-jre-image` target. It has hotspot binaries and a base list of modules required for the runtime. It includes a class data-sharing cache.
+Note: `legacy-jre-image` uses `jlink` to produce runtime image from the full JDK image.
 
 Azul Zulu packages a limited set of binaries and a full set of JDK modules. It includes a class data-sharing cache. It only installs base dependencies (`libc` and `libnss`) and none of the Abstract Window Toolkit (AWT) such as `fontconfig` despite having AWT binaries present in the Java runtime.
 
@@ -48,7 +49,7 @@ Amazon Corretto installs the Java JDK package in `amazonlinux:2023` with all pac
 
 The Google distroless image is built by installing the Debian openjdk-17-jre-headless package and its dependencies and copying them into a scratch container. It contains a limited set of binaries and a full set of JDK modules.
 
-Java 17 in chiselled Ubuntu is built by running `jlink` with a base list of modules required for the runtime in a normal Ubuntu 22.04 Jammy container. The dependencies are chiselled and copied into a scratch container along with the generated Java runtime.
+Java 17 in chiselled Ubuntu is built by running `jlink` with a base list of modules required for the runtime in the `ubuntu:22.04` container. The dependencies are chiselled and copied into a scratch container along with the generated Java runtime.
 
 As shown in the tables below the best space efficiency is achieved by Java 17 in chiselled Ubuntu with both approaches combined. `jlink` provides the best space saving and it is further augmented by having only Java library dependencies in the resulting image.
 
