@@ -42,7 +42,7 @@ The evaluated images are built using the different processes and this affects th
 
 Eclipse Temurin images use `ubuntu:22.04` or `alpine:3.18` base images and extract Adoptium's build of Java 17 Runtime built with OpenJDK `legacy-jre-image` target. It contains hotspot binaries and a base list of modules required for the runtime and is generated from the JDK image with the `jlink` tool. It includes a class data-sharing cache.
 
-Azul Zulu packages a limited set of binaries and a full set of JDK modules. It includes class data-sharing cache. It only installs base dependencies (`libc` and `libnss`) and none of the Abstract Window Toolkit (AWT) such as fontconfig despite having AWT binaries present in the Java runtime.
+Azul Zulu packages a limited set of binaries and a full set of JDK modules. It includes a class data-sharing cache. It only installs base dependencies (`libc` and `libnss`) and none of the Abstract Window Toolkit (AWT) such as `fontconfig` despite having AWT binaries present in the Java runtime.
 
 Amazon Corretto installs Java JDK package in `amazonlinux:2023` with all package dependencies. It packages a limited set of binaries and a full set of JDK modules.
 
