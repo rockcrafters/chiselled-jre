@@ -1,5 +1,5 @@
 ARG BASE_IMAGE=ubuntu/jre:17_edge
-ARG MAVEN_IMAGE=maven:3.9.5-eclipse-temurin-17
+ARG MAVEN_IMAGE=maven:3.9.6-eclipse-temurin-17
 FROM $MAVEN_IMAGE as builder
 
 FROM $BASE_IMAGE
