@@ -1,6 +1,19 @@
+ARG UBUNTU_RELEASE=22.04
 ARG BASE_IMAGE=ubuntu/jre:17_edge
-ARG MAVEN_IMAGE=maven:3.9.5-eclipse-temurin-17
+ARG MAVEN_IMAGE=maven:3.9.6-eclipse-temurin-17
 FROM $MAVEN_IMAGE as builder
+FROM public.ecr.aws/ubuntu/ubuntu:$UBUNTU_RELEASE@sha256:83fc61c57dee4e20e0dfac33e988fd54160b136875cd6f4e9ff53ac178ddbeb6 AS jdk
+
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y ca-certificates \
+        ca-certificates-java \
+        binutils \
+        openjdk-17-jdk \
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/*
+
+ RUN jlink --no-header-files --no-man-pages --strip-debug \
+    --add-modules ALL-MODULE-PATH --output /opt/java
 
 FROM $BASE_IMAGE
 
@@ -15,17 +28,12 @@ COPY --from=builder /usr/share/maven /usr/share/maven
 ENV JAVA_HOME=/opt/java
 
 # Add javac compiler for maven (it always recompiles package-info.java)
-COPY --from=builder /opt/java/openjdk/bin/javac \
-    /opt/java/bin/
+COPY --from=jdk /opt/java/bin/javac  /opt/java/bin/
 # compatibility signatures
-COPY --from=builder /opt/java/openjdk/lib/ct.sym \
-    /opt/java/lib/
+COPY --from=jdk /opt/java/lib/ct.sym /opt/java/lib/
 # additional jars
-COPY --from=builder /opt/java/openjdk/lib/*.jar \
-    /opt/java/lib/
-
+COPY --from=jdk /opt/java/lib/*.jar  /opt/java/lib/
 # copy modules
-COPY --from=builder /opt/java/openjdk/lib/modules \
-    /opt/java/lib/
+COPY --from=jdk /opt/java/lib/modules /opt/java/lib/
 
 ENTRYPOINT [ "/usr/share/maven/bin/mvn" ]
