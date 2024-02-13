@@ -28,7 +28,7 @@ jobs:
           java-version: '17'
 
       - name: Tests Maven cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ runner.temp }}/.m2
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
@@ -36,7 +36,7 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Tests PDFBox
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: tests/pdfbox/pdfbox
           key: tests-pdfbox-pdfbox-3.0.0-alpha3
@@ -44,7 +44,7 @@ jobs:
             tests-pdfbox-pdfbox-3.0.0-alpha3
 
       - name: Tests Petclinic
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: tests/petclinic-test/spring-petclinic
           key: tests-petclinic-test-spring-petclinic
