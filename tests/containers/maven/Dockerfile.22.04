@@ -2,7 +2,7 @@ ARG UBUNTU_RELEASE=22.04
 ARG BASE_IMAGE=ubuntu/jre:17_edge
 ARG MAVEN_IMAGE=maven:3.9.6-eclipse-temurin-17
 FROM $MAVEN_IMAGE as builder
-FROM public.ecr.aws/ubuntu/ubuntu:$UBUNTU_RELEASE@sha256:722b3bddfe96b95441f626cf94974d79213090ecbd16954f71d7c080fb413561 AS jdk
+FROM public.ecr.aws/ubuntu/ubuntu:$UBUNTU_RELEASE@sha256:a765620d93858952f144c47e046caf8a34abb1a18986b150db111bf21bc14374 AS jdk
 
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y ca-certificates \
