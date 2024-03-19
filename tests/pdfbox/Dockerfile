@@ -21,7 +21,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /rootfs \
-      && chisel cut --release /opt/chisel-releases --root /rootfs \
+      && chisel cut --root /rootfs \
         openjdk-8-jre-headless_awt
 
 FROM $MAVEN_IMAGE
