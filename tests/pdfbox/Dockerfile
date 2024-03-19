@@ -25,4 +25,4 @@ RUN mkdir -p /rootfs \
         openjdk-8-jre-headless_awt
 
 FROM $MAVEN_IMAGE
-COPY --from=sliced-deps /rootfs /
+COPY --from=builder /rootfs /
