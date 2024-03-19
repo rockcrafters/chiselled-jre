@@ -4,36 +4,25 @@ ARG USER=app
 ARG UID=101
 ARG GROUP=app
 ARG GID=101
-
-FROM golang:1.22 AS chisel
-ARG UBUNTU_RELEASE
-RUN git clone https://github.com/canonical/chisel-releases /opt/chisel-releases \
-    && git clone --depth 1 -b main https://github.com/canonical/chisel /opt/chisel
-WORKDIR /opt/chisel
-RUN go generate internal/deb/version.go \
-    && go build ./cmd/chisel
+ARG CHISEL_VERSION=0.9.1
+ARG TARGETARCH=amd64
 
 FROM public.ecr.aws/ubuntu/ubuntu:$UBUNTU_RELEASE@sha256:722b3bddfe96b95441f626cf94974d79213090ecbd16954f71d7c080fb413561 AS builder
+ARG CHISEL_VERSION
+ARG TARGETARCH
+ADD https://github.com/canonical/chisel/releases/download/v${CHISEL_VERSION}/chisel_v${CHISEL_VERSION}_linux_${TARGETARCH}.tar.gz chisel.tar.gz
+RUN tar -xvf chisel.tar.gz -C /usr/bin/
+
 SHELL ["/bin/bash", "-oeux", "pipefail", "-c"]
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y ca-certificates \
         ca-certificates-java \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/*
-COPY --from=chisel /opt/chisel/chisel /usr/bin/
 
-### BOILERPLATE END ###
-
-FROM builder AS sliced-deps
-ARG USER
-ARG UID
-ARG GROUP
-ARG GID
-SHELL ["/bin/bash", "-oeux", "pipefail", "-c"]
-COPY --from=chisel /opt/chisel-releases /opt/chisel-releases
 RUN mkdir -p /rootfs \
-      && chisel cut --release /opt/chisel-releases --root /rootfs \
+      && chisel cut --root /rootfs \
         openjdk-8-jre-headless_awt
 
 FROM $MAVEN_IMAGE
-COPY --from=sliced-deps /rootfs /
+COPY --from=builder /rootfs /
