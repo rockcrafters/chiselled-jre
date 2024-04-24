@@ -7,7 +7,7 @@ ARG UID=101
 ARG GROUP=app
 ARG GID=101
 
-FROM eclipse-temurin:17.0.10_7-jdk-jammy as builder
+FROM eclipse-temurin:17.0.11_9-jdk-jammy as builder
 
 ENV PETCLINIC_TAG=${PETCLINIC_TAG:-spring-boot-3.0.6}
 ENV PETCLINIC_REPO=${PETCLINIC_REPO:-https://github.com/vpa1977/spring-petclinic}
