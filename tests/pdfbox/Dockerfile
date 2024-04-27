@@ -7,7 +7,7 @@ ARG GID=101
 ARG CHISEL_VERSION=0.9.1
 ARG TARGETARCH=amd64
 
-FROM public.ecr.aws/ubuntu/ubuntu:$UBUNTU_RELEASE@sha256:12fb86d81bc4504d8261a91c83c54b9e5dcdf1d833ba0fe42ec9e0ee09a2b0ba AS builder
+FROM public.ecr.aws/ubuntu/ubuntu:$UBUNTU_RELEASE@sha256:1cc4019c277242e5fb710f2cf40af1590ad053b7d764efba48b051871dcc18d8 AS builder
 ARG CHISEL_VERSION
 ARG TARGETARCH
 ADD https://github.com/canonical/chisel/releases/download/v${CHISEL_VERSION}/chisel_v${CHISEL_VERSION}_linux_${TARGETARCH}.tar.gz chisel.tar.gz
