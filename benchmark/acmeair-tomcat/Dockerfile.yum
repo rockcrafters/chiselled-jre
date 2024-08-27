@@ -1,6 +1,6 @@
 ARG BASE_IMAGE
 
-FROM fedora:37 as builder
+FROM fedora:42 as builder
 
 ENV CATALINA_HOME /usr/local/tomcat
 ENV PATH $CATALINA_HOME/bin:$PATH
