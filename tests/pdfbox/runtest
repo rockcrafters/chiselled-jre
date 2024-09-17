@@ -17,7 +17,7 @@ if [ -z $M2_CACHE ]; then
 fi
 
 PDFBOX_REPO=https://github.com/vpa1977/pdfbox
-VERSION=3.0.0-alpha3
+VERSION=3.0.3
 APP=pdfbox
 TEST_DIR=`pwd`
 
