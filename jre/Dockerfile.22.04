@@ -59,6 +59,9 @@ RUN install -d -m 0755 -o $UID -g $GID /rootfs/home/$USER \
 RUN mkdir -p /rootfs/opt \
     && cp -r /opt/java/ /rootfs/opt/java/
 
+WORKDIR /rootfs
+RUN ln -s --relative opt/java/bin/java usr/bin/
+
 FROM scratch
 ARG USER
 ARG UID
