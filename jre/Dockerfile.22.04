@@ -51,7 +51,8 @@ RUN mkdir -p /rootfs \
         zlib1g_libs \
         libgraphite2-3_libs \
         libglib2.0-0_core \
-        base-files_bin
+        base-files_bin \
+        base-files_chisel
 RUN install -d -m 0755 -o $UID -g $GID /rootfs/home/$USER \
     && mkdir -p /rootfs/etc \
     && echo -e "root:x:0:\n$GROUP:x:$GID:" >/rootfs/etc/group \
