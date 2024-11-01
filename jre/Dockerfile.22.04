@@ -34,6 +34,7 @@ RUN mkdir -p /rootfs \
         openjdk-8-jre-headless_sctp \
         media-types_data \
         base-files_bin \
+        base-files_chisel \
     && ln -s "$(find /rootfs/usr/lib/jvm/java-8-openjdk-*/jre/bin -name java | sed 's/\/rootfs//')" /rootfs/usr/bin/
 RUN install -d -m 0755 -o $UID -g $GID /rootfs/home/$USER \
     && echo -e "root:x:0:\n$GROUP:x:$GID:" >/rootfs/etc/group \
