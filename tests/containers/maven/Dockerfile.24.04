@@ -1,0 +1,39 @@
+ARG UBUNTU_RELEASE=24.04
+ARG BASE_IMAGE=ubuntu/jre:21_edge
+ARG MAVEN_IMAGE=maven:3.9.9-eclipse-temurin-21
+FROM $MAVEN_IMAGE as builder
+FROM public.ecr.aws/ubuntu/ubuntu:$UBUNTU_RELEASE@sha256:da20fb875cfefd317c49e7aaf3998d3e5ad42c5b20f34a0eec6dca2fe4fbb8f4 AS jdk
+
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y ca-certificates \
+        ca-certificates-java \
+        binutils \
+        openjdk-21-jdk \
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/*
+
+ RUN jlink --no-header-files --no-man-pages --strip-debug \
+    --add-modules ALL-MODULE-PATH --output /opt/java
+
+FROM $BASE_IMAGE
+
+COPY --from=builder /bin/sh /bin/sh
+COPY --from=builder /usr/bin/chmod /usr/bin/chmod
+COPY --from=builder /usr/bin/uname /usr/bin/uname
+COPY --from=builder /usr/bin/dirname /usr/bin/dirname
+# note, Temurin base does not install into /etc/maven and /usr/share/java
+# other base might require copying those folders
+COPY --from=builder /usr/share/maven /usr/share/maven
+
+ENV JAVA_HOME=/opt/java
+
+# Add javac compiler for maven (it always recompiles package-info.java)
+COPY --from=jdk /opt/java/bin/javac  /opt/java/bin/
+# compatibility signatures
+COPY --from=jdk /opt/java/lib/ct.sym /opt/java/lib/
+# additional jars
+COPY --from=jdk /opt/java/lib/*.jar  /opt/java/lib/
+# copy modules
+COPY --from=jdk /opt/java/lib/modules /opt/java/lib/
+
+ENTRYPOINT [ "/usr/share/maven/bin/mvn" ]
