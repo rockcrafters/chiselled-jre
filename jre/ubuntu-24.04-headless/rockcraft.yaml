@@ -1,0 +1,93 @@
+name: jre
+version: 21.0.5+11
+base: bare
+build-base: ubuntu@24.04
+platforms:
+  amd64:
+  arm64:
+    build-on: [ amd64 ]
+
+summary: OpenJDK 21 headless runtime environment
+description: |
+  This rock provides OpenJDK 21 runtime environment including the following modules:
+   - java.base
+   - java.instrument
+   - java.logging,java.management
+   - java.management.rmi
+   - java.naming
+   - java.prefs
+   - java.rmi
+   - java.security.sasl
+   - java.xml,
+   - jdk.internal.vm.ci
+   - jdk.jfr,jdk.management
+   - jdk.management.jfr
+   - jdk.management.agent
+   - jdk.net
+   - jdk.nio.mapmode
+   - jdk.sctp
+   - jdk.unsupported
+   - jdk.naming.rmi
+   - java.se
+   - java.net.http
+   - java.scripting
+   - java.security.jgss
+   - java.smartcardio
+   - java.sql
+   - java.sql.rowset
+   - java.transaction.xa
+   - java.xml.crypto
+   - jdk.charsets
+   - jdk.crypto.cryptoki
+   - jdk.crypto.ec
+   - jdk.dynalink
+   - jdk.httpserver
+   - jdk.jsobject
+   - jdk.localedata
+   - jdk.naming.dns
+   - jdk.security.auth
+   - jdk.security.jgss
+   - jdk.xml.dom
+   - jdk.zipfs
+   - java.compiler
+   - jdk.internal.vm.compiler
+   - jdk.internal.vm.compiler.management
+   - jdk.jdwp.agent
+
+parts:
+  dependencies:
+    plugin: nil
+    stage-packages:
+      - base-files_base
+      - libc6_libs
+      - libgcc-s1_libs
+      - libstdc++6_libs
+      - zlib1g_libs
+      - libpcsclite1_libs
+      - libnss3_libs
+
+  runtime:
+    plugin: nil
+    build-packages:
+      - openjdk-21-jdk-headless
+    override-build: |
+      JAVA_HOME=usr/lib/jvm/java-21-openjdk-${CRAFT_ARCH_BUILD_FOR}
+      rm -rf ${CRAFT_PART_INSTALL}/${JAVA_HOME}
+      jlink --add-modules java.base,java.instrument,\
+      java.logging,java.management,java.management.rmi,\
+      java.naming,java.prefs,java.rmi,java.security.sasl,\
+      java.xml,jdk.internal.vm.ci,\
+      jdk.jfr,jdk.management,jdk.management.jfr,jdk.management.agent,\
+      jdk.net,jdk.nio.mapmode,jdk.sctp,jdk.unsupported,jdk.naming.rmi,\
+      java.se,java.net.http,java.scripting,java.security.jgss,\
+      java.smartcardio,java.sql,java.sql.rowset,java.transaction.xa,\
+      java.xml.crypto,jdk.charsets,jdk.crypto.cryptoki,\
+      jdk.crypto.ec,jdk.dynalink,jdk.httpserver,jdk.jsobject,jdk.localedata,\
+      jdk.naming.dns,jdk.security.auth,jdk.security.jgss,jdk.xml.dom,\
+      jdk.zipfs,java.compiler,jdk.internal.vm.compiler,jdk.internal.vm.compiler.management,\
+      jdk.jdwp.agent --no-man-pages -G \
+      --output ${CRAFT_PART_INSTALL}/${JAVA_HOME}
+
+      cd ${CRAFT_PART_INSTALL}
+      mkdir -p usr/bin
+      ln -s --relative ${JAVA_HOME}/bin/java usr/bin/
