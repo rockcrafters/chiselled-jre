@@ -1,5 +1,5 @@
 name: jre
-version: 21.0.5+11
+version: 21-edge
 base: bare
 build-base: ubuntu@24.04
 platforms:
