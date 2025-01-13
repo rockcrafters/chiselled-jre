@@ -47,7 +47,7 @@ jobs:
         run: |
           cd jre/ubuntu-24.04-headless
           rockcraft pack --build-for amd64
-          find . -name jre_*_amd64.rock -exec rockcraft.skopeo copy oci-archive:{} docker-daemon:ubuntu/jre:21_edge \;
+          find . -name jre_*_amd64.rock -exec rockcraft.skopeo copy oci-archive:{} docker-daemon:ubuntu/jre:${{image-name}} \;
 
       - name: Build the JDK docker image
         run: |
