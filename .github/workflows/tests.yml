@@ -6,9 +6,9 @@ on:
 
 env:
   image-name: ubuntu/jre:test
-  build-image-name: temurin-jdk17-builder:test
-  maven-image-name: temurin-jdk17-maven:test
-  maven-image-base: maven:3.9.1-eclipse-temurin-17
+  build-image-name: ubuntu/jre:test-builder
+  maven-image-name: ubuntu/jre:test-maven
+  maven-image-base: maven:3.9.9-eclipse-temurin-21
 
 jobs:
   build:
@@ -54,6 +54,7 @@ jobs:
         run: |
           docker build \
           -t ${{ env.build-image-name }} \
+          --build-arg ARCH=${{ arch }}
           --build-arg UID=$(id -u ${USER}) \
           --build-arg GID=$(id -g ${USER}) \
           -f tests/containers/builder/Dockerfile.${{ matrix.ubuntu-release }} \
@@ -63,6 +64,7 @@ jobs:
         run: |
           docker build \
           -t ${{ env.maven-image-name }} \
+          --build-arg ARCH=${{ arch }}
           --build-arg UID=$(id -u ${USER}) \
           --build-arg GID=$(id -g ${USER}) \
           --build-arg BASE_IMAGE=${{ env.image-name }} \
