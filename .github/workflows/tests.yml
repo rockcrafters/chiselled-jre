@@ -65,7 +65,7 @@ jobs:
         run: |
           docker build \
           -t ${{ env.build-image-name }} \
-          --build-arg ARCH=${{ matrix.arch }}
+          --build-arg ARCH=${{ matrix.arch }} \
           --build-arg UID=$(id -u ${USER}) \
           --build-arg GID=$(id -g ${USER}) \
           -f tests/containers/builder/Dockerfile.${{ matrix.ubuntu-release }} \
@@ -75,7 +75,7 @@ jobs:
         run: |
           docker build \
           -t ${{ env.maven-image-name }} \
-          --build-arg ARCH=${{ matrix.arch }}
+          --build-arg ARCH=${{ matrix.arch }} \
           --build-arg UID=$(id -u ${USER}) \
           --build-arg GID=$(id -g ${USER}) \
           --build-arg BASE_IMAGE=${{ env.image-name }} \
