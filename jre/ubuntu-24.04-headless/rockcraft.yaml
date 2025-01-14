@@ -58,6 +58,7 @@ parts:
   dependencies:
     plugin: nil
     stage-packages:
+      - base-passwd_data
       - base-files_base
       - libc6_libs
       - libgcc-s1_libs
@@ -65,6 +66,10 @@ parts:
       - zlib1g_libs
       - libpcsclite1_libs
       - libnss3_libs
+    override-build: |
+      craftctl default
+      groupadd --root ${CRAFT_PART_INSTALL} app -g 10001
+      useradd -d /home/app -s /bin/bash --root ${CRAFT_PART_INSTALL} -g app -m -u 10001 app
 
   runtime:
     plugin: nil
