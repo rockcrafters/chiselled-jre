@@ -6,4 +6,5 @@ pdfbox-2.0.27
 sh
 *.war
 *.jar
-tests/pdfbox/m2
+.embedmongo
+*.class
