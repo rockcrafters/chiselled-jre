@@ -21,8 +21,7 @@ TAG=chiselled-demo-17
 ACMEAIR_REPO=https://github.com/vpa1977/${PROJECT}
 
 DOCKER_OPTS="--rm  \
-    --tmpfs /tmp:exec \
-    -u app \
+    -u $(id -u ${USER}):$(id -g ${USER}) \
     -v ${M2_CACHE}:${M2_CACHE} \
     -v ${TEST_DIR}:${TEST_DIR} \
     -w ${TEST_DIR}/${PROJECT} "
@@ -36,4 +35,5 @@ docker run \
     ${DOCKER_OPTS} \
     ${MAVEN_IMAGE} \
         -X -e  -Dmaven.repo.local="${M2_CACHE}" \
+        -Duser.home=${TEST_DIR} \
         test

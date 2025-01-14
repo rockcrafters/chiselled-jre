@@ -5,7 +5,7 @@ echo "Running tests..."
 
 export BASE_IMAGE=${1:-"ubuntu/jre:test"}
 export BUILD_IMAGE=${2:-"ubuntu/jre:test-builder"}
-export M2_CACHE=${3:-"/tmp/.m2"}
+export M2_CACHE=${3:-"$(pwd)/.m2"}
 export MAVEN_IMAGE=${4:-"ubuntu/jre:test-maven"}
 
 compile() {
@@ -13,7 +13,7 @@ compile() {
 }
 
 run_container() {
-	docker run --rm -v $PWD:/app:ro -w /app $3 $1 $2
+	docker run --rm -v $PWD:/app:ro -w /app $*
 }
 
 export -f compile

@@ -6,5 +6,5 @@ echo "Running test for HTTPS connection app"
 compile src/Main.java "-d ."
 
 # run the test and if it fails, retry with the full network diagnostics
-run_container $BASE_IMAGE Main || \
-    run_container $BASE_IMAGE "-Djavax.net.debug=all Main"
+run_container $BASE_IMAGE exec java -cp /app Main || \
+    run_container $BASE_IMAGE exec java -cp /app -Djavax.net.debug=all Main

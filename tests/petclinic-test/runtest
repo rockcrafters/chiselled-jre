@@ -30,8 +30,7 @@ git clone --branch ${PETCLINIC_TAG} ${PETCLINIC_REPO} || \
 
 # We should replace Temurin with our dev container
 DOCKER_OPTS="--rm  \
-    --tmpfs /tmp:exec \
-    -u app \
+    -u $(id -u ${USER}):$(id -g ${USER}) \
     -v ${M2_CACHE}:${M2_CACHE} \
     -v ${TEST_DIR}:${TEST_DIR} \
     -w ${TEST_DIR}/${PROJECT} "
@@ -40,5 +39,6 @@ DOCKER_OPTS="--rm  \
 docker run \
     ${DOCKER_OPTS} \
     ${MAVEN_IMAGE} \
-        -Dmaven.repo.local="${M2_CACHE}" \
+        -Dmaven.repo.local=${M2_CACHE} \
+        -Duser.home=${TEST_DIR} \
         test

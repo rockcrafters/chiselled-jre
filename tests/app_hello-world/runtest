@@ -5,4 +5,4 @@ echo "Running test for Java Hello World app"
 
 compile src/HelloWorld.java "-d ."
 
-run_container $BASE_IMAGE HelloWorld
+run_container $BASE_IMAGE exec java -cp /app HelloWorld
