@@ -123,13 +123,6 @@ jobs:
           sudo snap remove rockcraft || true
           sudo snap install rockcraft --classic
 
-      # Lint the Dockerfiles
-      - name: Lint the Dockerfile
-        uses: hadolint/hadolint-action@v3.1.0
-        with:
-          dockerfile: jre/Dockerfile.${{ matrix.ubuntu-release }}
-          ignore: DL3008,DL3015,SC3028
-
       - name: Build the jre image
         run: |
           cd jre/ubuntu-24.04-headless
