@@ -46,8 +46,8 @@ RUN install -d -m 0755 -o $UID -g $GID /rootfs/home/$USER \
 RUN cp /etc/ssl/certs/java/cacerts /rootfs/etc/ssl/certs/java/cacerts
 
 # Create security manifest
-ADD print-dpkg-query.awk /
-ADD create-manifest.sh /
+COPY print-dpkg-query.awk /
+COPY create-manifest.sh /
 RUN /bin/bash /create-manifest.sh /rootfs ${TARGETARCH}
 
 FROM scratch
