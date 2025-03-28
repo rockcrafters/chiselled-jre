@@ -7,7 +7,7 @@ ARG UID=101
 ARG GROUP=app
 ARG GID=101
 
-FROM eclipse-temurin:17.0.14_7-jdk-jammy as builder
+FROM eclipse-temurin:17.0.14_7-jdk-jammy AS builder
 
 ENV PETCLINIC_TAG=${PETCLINIC_TAG:-spring-boot-3.0.6}
 ENV PETCLINIC_REPO=${PETCLINIC_REPO:-https://github.com/vpa1977/spring-petclinic}
@@ -28,10 +28,8 @@ USER $UID:$GID
 
 # copy petclinic sample
 COPY --chown=$UID:$GID --from=builder \
-    /spring-petclinic/target/spring-petclinic-3.0.6.jar /
+    /spring-petclinic/target/spring-petclinic-3.0.0-SNAPSHOT.jar /
 
 WORKDIR /
 
-ENTRYPOINT ["/opt/java/bin/java", \
-    "-jar", \
-    "spring-petclinic-3.0.6.jar" ]
+CMD ["-jar", "spring-petclinic-3.0.0-SNAPSHOT.jar" ]
