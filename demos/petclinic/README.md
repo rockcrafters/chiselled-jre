@@ -6,6 +6,6 @@ This Dockerfile runs the [Spring PetClinic](https://github.com/spring-projects/s
 
 Execute:
 
-`` docker build -t petclinic . && docker run -p 8080:8080 --tmpfs /tmp:exec petclinic ``
+`` docker build -t petclinic . && docker run -p 8080:8080 petclinic ``
 
 Give it a few minutes to build the sample application and then navigate to http://localhost:8080 to explore the demo.
