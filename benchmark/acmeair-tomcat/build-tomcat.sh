@@ -1,6 +1,7 @@
 #!/bin/bash
 set -ex
-JAVA_HOME=$(find /usr/lib/jvm -name *.h -print -quit | xargs dirname | xargs dirname)
+JAVA_HOME=$(find /usr/lib/jvm -name jni.h -print -quit | xargs dirname | xargs dirname)
+echo JAVA_HOME is $JAVA_HOME
 TOMCAT_MAJOR=10
 TOMCAT_VERSION=10.1.9
 TOMCAT_SHA512=cfdc182e62b33b98ce61f084f51c9cf0bcc5e5f4fff341d6e8bcb7c54b12c058faa2e164a587100ba1c6172b9ae2b32ff4a7193a859b368d1f67baca6aa1680f
@@ -22,13 +23,13 @@ tar -xf bin/tomcat-native.tar.gz -C "$nativeBuildDir" --strip-components=1
 export CATALINA_HOME="$PWD"
 cd "$nativeBuildDir/native"
 aprConfig="$(command -v apr-1-config)"
-./configure \
+bash ./configure \
     --libdir="$TOMCAT_NATIVE_LIBDIR" \
     --prefix="$CATALINA_HOME" \
     --with-apr="$aprConfig" \
-    --with-java-home="$JAVA_HOME" \
+    --with-java-home="$JAVA_HOME"
 
-make CFLAGS=-DOPENSSL_SUPPRESS_DEPRECATED -j "$(nproc)"
+make CFLAGS="-DOPENSSL_SUPPRESS_DEPRECATED -I$JAVA_HOME/include -I$JAVA_HOME/include/linux" -j "$(nproc)"
 
 make install
 cd $CATALINA_HOME
