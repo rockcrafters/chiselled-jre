@@ -24,6 +24,7 @@ DOCKER_OPTS="--rm  \
     --tmpfs /tmp:exec \
     -u app \
     --env MONGO_PORT=47017 \
+    -p 47017:47017 \
     -v ${M2_CACHE}:${M2_CACHE} \
     -v ${TEST_DIR}:${TEST_DIR} \
     -w ${TEST_DIR}/${PROJECT} "
