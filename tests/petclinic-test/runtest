@@ -30,7 +30,6 @@ git clone --branch ${PETCLINIC_TAG} ${PETCLINIC_REPO} || \
 
 # We should replace Temurin with our dev container
 DOCKER_OPTS="--rm  \
-    --tmpfs /tmp:exec \
     -u app \
     -v ${M2_CACHE}:${M2_CACHE} \
     -v ${TEST_DIR}:${TEST_DIR} \

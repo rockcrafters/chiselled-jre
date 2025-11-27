@@ -3,10 +3,10 @@ ARG USER=app
 ARG UID=101
 ARG GROUP=app
 ARG GID=101
-ARG CHISEL_VERSION=1.2.0
+ARG CHISEL_VERSION=1.3.0
 ARG TARGETARCH=amd64
 
-FROM public.ecr.aws/ubuntu/ubuntu:$UBUNTU_RELEASE@sha256:1582c29f34a48752e406f1a261fe9545fad895da3f6bb4be55bc82485557564e AS builder
+FROM public.ecr.aws/ubuntu/ubuntu:$UBUNTU_RELEASE@sha256:2d50a274db7c4875851bc825c12e0b93732d3f162177c21a7cd73d999134b046 AS builder
 ARG USER
 ARG UID
 ARG GROUP
@@ -21,6 +21,8 @@ RUN apt-get update \
         ca-certificates-java \
         binutils \
         openjdk-17-jdk \
+        zstd \
+        jq \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/*
 
@@ -52,7 +54,7 @@ RUN mkdir -p /rootfs \
         zlib1g_libs \
         libgraphite2-3_libs \
         libglib2.0-0_core \
-        base-files_bin \
+        base-files_base \
         base-files_chisel
 RUN install -d -m 0755 -o $UID -g $GID /rootfs/home/$USER \
     && mkdir -p /rootfs/etc \
@@ -60,6 +62,12 @@ RUN install -d -m 0755 -o $UID -g $GID /rootfs/home/$USER \
     && echo -e "root:x:0:0:root:/root:/noshell\n$USER:x:$UID:$GID::/home/$USER:/noshell" >/rootfs/etc/passwd
 RUN mkdir -p /rootfs/opt \
     && cp -r /opt/java/ /rootfs/opt/java/
+
+# create security manifest
+WORKDIR /
+COPY create-manifest.sh /
+COPY print-dpkg-query.awk /
+RUN /bin/bash /create-manifest.sh /rootfs ${TARGETARCH}
 
 WORKDIR /rootfs
 RUN ln -s --relative opt/java/bin/java usr/bin/
@@ -72,5 +80,5 @@ USER $UID:$GID
 COPY --from=builder /rootfs /
 # Workaround for https://github.com/moby/moby/issues/38710
 COPY --from=builder --chown=$UID:$GID /rootfs/home/$USER /home/$USER
-ENV JAVA_HOME /opt/java/
+ENV JAVA_HOME=/opt/java/
 ENTRYPOINT ["/opt/java/bin/java"]

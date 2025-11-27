@@ -1,6 +1,6 @@
 ARG UBUNTU_RELEASE=22.04
 ARG BASE_IMAGE=ubuntu/jre:17_edge
-FROM golang:1.23 AS chisel
+FROM golang:1.25 AS chisel
 ARG UBUNTU_RELEASE
 RUN git clone  --depth 1 -b ubuntu-22.04 https://github.com/canonical/chisel-releases /opt/chisel-releases \
     && git clone --depth 1 -b main https://github.com/canonical/chisel /opt/chisel
@@ -8,7 +8,7 @@ WORKDIR /opt/chisel
 RUN go generate internal/deb/version.go \
     && go build ./cmd/chisel
 
-FROM public.ecr.aws/ubuntu/ubuntu:$UBUNTU_RELEASE@sha256:1582c29f34a48752e406f1a261fe9545fad895da3f6bb4be55bc82485557564e AS builder
+FROM public.ecr.aws/ubuntu/ubuntu:$UBUNTU_RELEASE@sha256:2d50a274db7c4875851bc825c12e0b93732d3f162177c21a7cd73d999134b046 AS builder
 SHELL ["/bin/bash", "-oeux", "pipefail", "-c"]
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y ca-certificates \
