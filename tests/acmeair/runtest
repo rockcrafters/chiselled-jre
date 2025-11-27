@@ -37,4 +37,5 @@ docker run \
     ${MAVEN_IMAGE} \
         -Dmaven.repo.local="${M2_CACHE}" \
         -Dproject.build.directory=/home/app/build \
+        -Djava.io.tmpdir=/home/app/ \
         -X -e --debug test
