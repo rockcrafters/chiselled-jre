@@ -38,4 +38,5 @@ docker run \
     ${DOCKER_OPTS} \
     ${APP} \
         -Dmaven.repo.local="${M2_CACHE}" \
+        -Dproject.build.directory=/home/app/build \
         test
