@@ -53,6 +53,7 @@ jobs:
 
       - name: Build the jre image
         run: |
+          docker image rm ${{ env.image-name }} || true
           docker build \
           -t ${{ env.image-name }} \
           --build-arg UID=$(id -u ${USER}) \
@@ -62,6 +63,7 @@ jobs:
 
       - name: Build the JDK docker image
         run: |
+          docker image rm ${{ env.build-image-name }} || true
           docker build \
           -t ${{ env.build-image-name }} \
           --build-arg UID=$(id -u ${USER}) \
@@ -71,6 +73,7 @@ jobs:
 
       - name: Build Maven docker image
         run: |
+          docker image rm ${{ env.maven-image-name }} || true
           docker build \
           -t ${{ env.maven-image-name }} \
           --build-arg UID=$(id -u ${USER}) \

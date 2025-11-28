@@ -21,7 +21,7 @@ SHELL ["/bin/bash", "-oeux", "pipefail", "-c"]
 ADD https://github.com/canonical/chisel/releases/download/v${CHISEL_VERSION}/chisel_v${CHISEL_VERSION}_linux_${TARGETARCH}.tar.gz chisel.tar.gz
 RUN tar -xvf chisel.tar.gz -C /usr/bin/
 RUN mkdir -p /rootfs \
-        && chisel cut --root /rootfs coreutils_bins dash_bins
+        && chisel cut --root /rootfs coreutils_bins dash_bins grep_bins
 
 FROM $BASE_IMAGE
 ARG TARGETARCH
