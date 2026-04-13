@@ -1,5 +1,5 @@
 ARG MAVEN_IMAGE
-ARG UBUNTU_RELEASE=22.04
+ARG UBUNTU_RELEASE=24.04
 ARG USER=app
 ARG UID=101
 ARG GROUP=app
@@ -7,7 +7,7 @@ ARG GID=101
 ARG CHISEL_VERSION=1.4.1
 ARG TARGETARCH=amd64
 
-FROM public.ecr.aws/ubuntu/ubuntu:$UBUNTU_RELEASE@sha256:74f1fdaef92dff9c4da5c35e90b92b07807ef8c27114f622c700107d7042d79e AS builder
+FROM public.ecr.aws/ubuntu/ubuntu:$UBUNTU_RELEASE@sha256:748740465d0aadaa69ab6e6c295892f17d7a8f44a85090dbb571ec0bb8c5674f AS builder
 ARG CHISEL_VERSION
 ARG TARGETARCH
 ADD https://github.com/canonical/chisel/releases/download/v${CHISEL_VERSION}/chisel_v${CHISEL_VERSION}_linux_${TARGETARCH}.tar.gz chisel.tar.gz
