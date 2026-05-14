@@ -7,7 +7,7 @@ ARG GID=101
 ARG CHISEL_VERSION=1.4.1
 ARG TARGETARCH=amd64
 
-FROM public.ecr.aws/ubuntu/ubuntu:$UBUNTU_RELEASE@sha256:2942ff52ece39b70afadf29eea924810b485fede02729b3579aec79f3ed060d1 AS builder
+FROM public.ecr.aws/ubuntu/ubuntu:$UBUNTU_RELEASE@sha256:f7054b7d5262af3ffbb794eddc1e9e3331cdbd6adbb0be788d7f139c1aad5c48 AS builder
 ARG CHISEL_VERSION
 ARG TARGETARCH
 RUN apt-get update \
