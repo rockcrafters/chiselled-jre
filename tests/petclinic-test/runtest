@@ -51,7 +51,6 @@ DOCKER_OPTS="--rm --tmpfs /tmp:exec \
     -u app"
 
 # add shell to allow maven tests
-cp /bin/sh sh
 docker build --build-arg BASE_IMAGE=${BASE_IMAGE:-ubuntu/jre:8_edge} \
     -t ${PETCLINIC_TAG} .
 
