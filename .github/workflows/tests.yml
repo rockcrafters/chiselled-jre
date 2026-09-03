@@ -111,7 +111,7 @@ jobs:
 
       # Lint the Dockerfiles
       - name: Lint the Dockerfile
-        uses: hadolint/hadolint-action@v3.3.0
+        uses: hadolint/hadolint-action@v3.5.0
         with:
           dockerfile: jre/Dockerfile.${{ matrix.ubuntu-release }}
           ignore: DL3008,DL3015,SC3028
